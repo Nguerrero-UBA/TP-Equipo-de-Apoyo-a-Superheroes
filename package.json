@@ -1,0 +1,26 @@
+{
+  "name": "tp-equipo-de-apoyo-a-superheroes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nguerrero-UBA/TP-Equipo-de-Apoyo-a-Superheroes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nguerrero-UBA/TP-Equipo-de-Apoyo-a-Superheroes/issues"
+  },
+  "homepage": "https://github.com/Nguerrero-UBA/TP-Equipo-de-Apoyo-a-Superheroes#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
