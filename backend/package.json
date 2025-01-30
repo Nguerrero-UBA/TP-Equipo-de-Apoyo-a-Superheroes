@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Nguerrero-UBA/TP-Equipo-de-Apoyo-a-Superheroes#readme",
   "dependencies": {
+    "@prisma/client": "^6.3.0",
     "express": "^4.21.2"
   },
   "devDependencies": {

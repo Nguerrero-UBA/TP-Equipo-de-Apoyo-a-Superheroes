@@ -1,16 +1,7 @@
 
 
 services:
-  frontend:  
-    build:
-      context: ./frontend
-    container_name: frontend-container
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
+  
     
 
   backend:
