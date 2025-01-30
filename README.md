@@ -16,3 +16,12 @@ Para el frontend necesitamos 3 paginas como minimo:
 - Criminales capturados
 
 ## Instrucciones para iniciar la base de datos
+Para iniciar la base de datos por primera vez, seguir estos pasos:
+
+- usando como guia el .env_example crear un .env adentro de la carpeta /backend
+- La informacion para rellenar la url de `DATABASE_URL` esta adentro del docker-compose
+- Una vez que se creo el .env con la informacion correcta, ejecutar el docker compose con el comando `docker compose up -d --build`(puede ser que no tenga suficientes permisos, si ese es el caso usar sudo)
+- El Dockerfile del backend tiene 
+
+Para ver si los contenedores se construlleron correctamente usar `docker ps`
+
