@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   frontend:  
@@ -8,9 +8,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app # 
-    environment:
-      
+      - ./frontend:/app
+    depends_on:
+      - backend
+    
 
   backend:
     build:
@@ -20,24 +21,29 @@ services:
       - "5000:5000" 
     environment:
       - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=mydb
+      - DB_USER=Equipo_apoyo
+      - DB_PASSWORD=contra_heroes
+      - DB_NAME=Registro_de_superheroes
+      - DB_PORT=5432
     depends_on:
       - db
     volumes:
       - ./backend:/app
+    
 
   db:
-    image: mysql:8.0
+    image: postgres:17
     container_name: db-container
-    ports:
-      - "3306:3306"
+    
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      - POSTGRES_USER=Equipo_apoyo
+      - POSTGRES_PASSWORD=contra_heroes
+      - POSTGRES_DB=Registro_de_superheroes
+    ports:
+      - 5432:5432
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   db_data:

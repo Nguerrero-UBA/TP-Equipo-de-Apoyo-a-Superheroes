@@ -6,4 +6,4 @@ RUN npm install
 
 EXPOSE 5000
 
-CMD ["node", "app.js"]
+CMD ["node", "src/index.js"]
