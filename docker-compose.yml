@@ -1,0 +1,41 @@
+
+
+services:
+  
+    
+
+  backend:
+    build:
+      context: ./backend 
+    container_name: backend-container
+    ports:
+      - "3000:3000" 
+    environment:
+      - DB_HOST=db
+      - DB_USER=Equipo_apoyo
+      - DB_PASSWORD=contra_heroes
+      - DB_NAME=Registro_de_superheroes
+      - DB_PORT=5432
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    
+
+  db:
+    image: postgres:17
+    container_name: db-container
+    
+    environment:
+      - POSTGRES_USER=Equipo_apoyo
+      - POSTGRES_PASSWORD=contra_heroes
+      - POSTGRES_DB=Registro_de_superheroes
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  db_data:

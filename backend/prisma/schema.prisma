@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Localidad {
+  loc_id             Int     @id @default(autoincrement())
+  nombre             String
+  poblacion         Int
+  estado            String
+  pais              String
+  nivel_de_inseguridad Int
+  Heroes            Hero[]
+  Criminales        Criminal[]
+  Crimenes          Crimen[]
+}
+
+model Hero {
+  id          Int    @id @default(autoincrement())
+  Nombre      String
+  nivel_de_poder Int
+  localidad   Localidad @relation(fields: [loc_id], references: [loc_id])
+  loc_id      Int
+  ocupado     Boolean @default(false)
+  hero_img    String?
+}
+
+model Criminal {
+  vill_id         Int    @id @default(autoincrement())
+  nombre          String
+  nivel_de_poder  Int
+  numero_de_miembros Int
+  localidad       Localidad @relation(fields: [loc_id], references: [loc_id])
+  loc_id         Int
+  capturado      Boolean @default(false)
+  villano_img    String?
+  Crimenes       Crimen[]
+}
+
+model Crimen {
+  crimen_id     Int    @id @default(autoincrement())
+  victima       String
+  crimen        String
+  localidad     Localidad @relation(fields: [loc_id], references: [loc_id])
+  loc_id        Int
+  criminal      Criminal @relation(fields: [vill_id], references: [vill_id])
+  vill_id       Int
+  en_curso      Boolean @default(true)
+}
