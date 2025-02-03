@@ -148,7 +148,79 @@ app.delete("/EAS/heroes/:id", async (req, res) => {
   }
 });
 
-app.listen(PORT, ()=> {
-    
+app.get("/EAS/crimenes", async (req, res) => {
+    try {
+        const crimenes = await prisma.Crimen.findMany();
+        res.json(crimenes);
+    } catch (error) {
+        console.error(error); // Esto imprimirá el error en la consola para ayudarte a depurar
+        res.status(500).json({ error: "Error al obtener los crimenes", details: error.message });
+    }
+});
+
+app.get("/EAS/crimenes/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const crimen = await prisma.crimen.findUnique({
+            where: {crimen_id: parseInt(id)}
+        });
+
+        if (!crimen) return res.status(404).json({error: "Crimen no encontrado"});
+
+        res.json(crimen);
+    } catch (error) {
+        res.status(500).json({error: "Error al obtener el crimen"});
+    }
+});
+
+app.post("/EAS/crimenes", async (req, res) => {
+    try {
+        const nuevoCrimen = await prisma.crimen.create({
+            data: {
+                victima: req.body.victima,
+                crimen: req.body.crimen,
+                loc_id: req.body.loc_id,
+                vill_id: req.body.vill_id,
+                en_curso: req.body.en_curso
+            },
+        });
+        res.status(201).json(nuevoCrimen);
+    } catch (error) {
+        res.status(500).json({error: "Error al crear el crimen"});
+    }
+});
+
+app.put("/EAS/crimenes/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const crimenActualizado = await prisma.crimen.update({
+            where: {crimen_id: parseInt(id)},
+            data: {
+                victima: req.body.victima,
+                crimen: req.body.crimen,
+                loc_id: req.body.loc_id,
+                vill_id: req.body.vill_id,
+                en_curso: req.body.en_curso
+            },
+        });
+        res.json(crimenActualizado);
+    } catch (error) {
+        res.status(500).json({error: "Error al actualizar el crimen"});
+    }
+});
+
+app.delete("/EAS/crimenes/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        await prisma.crimen.delete({
+            where: {crimen_id: parseInt(id)},
+        });
+        res.json({message: "Crimen eliminado correctamente"});
+    } catch (error) {
+        res.status(500).json({error: "Error al eliminar el crimen"});
+    }
+});
+
+app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
 }); 
