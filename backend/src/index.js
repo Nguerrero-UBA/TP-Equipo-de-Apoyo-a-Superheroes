@@ -83,6 +83,71 @@ app.delete("/api/localidades/:id", async (req, res) => {
   }
 });
 
+app.post("/EAS/heroes", async (req, res) => {
+  try {
+    const nuevoHeroe = await prisma.heroe.create({
+      data: {
+        nombre: req.body.nombre,
+        nivel_poder: req.body.nivel_poder,
+        lugar_id: req.body.lugar_id, 
+        ocupado: req.body.ocupado,
+        hero_img: req.body.hero_img,
+      },
+    });
+    res.status(201).json(nuevoHeroe);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el héroe" });
+  }
+});
+
+app.get("/EAS/heroes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const heroe = await prisma.heroe.findUnique({
+      where: { hero_id: parseInt(id) },
+      include: { lugar: true }, 
+    });
+
+    if (!heroe) return res.status(404).json({ error: "Héroe no encontrado" });
+
+    res.json(heroe);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener el héroe" });
+  }
+});
+
+app.put("/EAS/heroes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const heroeActualizado = await prisma.heroe.update({
+      where: { hero_id: parseInt(id) },
+      data: {
+        nombre: req.body.nombre,
+        nivel_poder: req.body.nivel_poder,
+        lugar_id: req.body.lugar_id, 
+        ocupado: req.body.ocupado,
+        hero_img: req.body.hero_img,
+      },
+    });
+
+    res.json(heroeActualizado);
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el héroe" });
+  }
+});
+
+app.delete("/EAS/heroes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.heroe.delete({
+      where: { hero_id: parseInt(id) },
+    });
+    res.json({ message: "Héroe eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el héroe" });
+  }
+});
+
 app.listen(PORT, ()=> {
     
     console.log("Server listening on PORT", PORT);
