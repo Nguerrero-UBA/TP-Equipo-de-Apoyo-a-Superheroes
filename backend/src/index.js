@@ -5,8 +5,11 @@ const PORT = 3000;
 const prisma = new PrismaClient();
 app.use(express.json());
 
+const path = require('path');
+app.use(express.static(path.join(__dirname,'../../frontend/public')));
+
 app.get('/', (req, res) => {
-    res.send('Equipo de Apoyo de Superheroes')
+    res.sendFile(path.join(__dirname, '../../frontend/public/index.html'))
   })
 
  app.get("/EAS/localidades", async (req, res) => {
@@ -224,3 +227,4 @@ app.delete("/EAS/crimenes/:id", async (req, res) => {
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
 }); 
+

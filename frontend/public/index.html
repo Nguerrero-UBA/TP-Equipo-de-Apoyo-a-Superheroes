@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Crimen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Crimenes</a></li>
+            <li><a href="#">Héroes</a></li>
+            <li><a href="#">Localidades</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Crear Nuevo Crimen</h1>
+        <form id="crimenForm">
+            <div class="form-group">
+                <label for="victima">Víctima:</label>
+                <input type="text" id="victima" name="victima" required>
+            </div>
+            <div class="form-group">
+                <label for="crimen">Crimen:</label>
+                <input type="text" id="crimen" name="crimen" required>
+            </div>
+            <div class="form-group">
+                <label for="loc_id">ID de Localidad:</label>
+                <input type="number" id="loc_id" name="loc_id" required>
+            </div>
+            <div class="form-group">
+                <label for="vill_id">ID de Villano:</label>
+                <input type="number" id="vill_id" name="vill_id" required>
+            </div>
+            <div class="form-group">
+                <label for="en_curso">¿En curso?</label>
+                <select id="en_curso" name="en_curso">
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <button type="submit">Crear Crimen</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
