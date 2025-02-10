@@ -1,0 +1,21 @@
+meta {
+  name: crear localidad
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/EAS/localidades
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre":"Kiev",
+    "poblacion":2954300,
+    "estado":"Kiev",
+    "pais":"Ukrania",
+    "nivel_de_inseguridad":10
+  }
+}
