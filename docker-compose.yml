@@ -9,7 +9,7 @@ services:
       context: ./backend 
     container_name: backend-container
     ports:
-      - "3000:3000" 
+      - "3001:3000" 
     environment:
       - DB_HOST=db
       - DB_USER=Equipo_apoyo
@@ -20,7 +20,7 @@ services:
       - db
     volumes:
       - ./backend:/app
-      - /app/node_modules
+
     
 
   db:

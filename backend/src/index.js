@@ -9,7 +9,7 @@ const path = require('path');
 app.use(express.static(path.join(__dirname,'../../frontend/public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/public/index.html'))
+    res.sendFile(path.join(__dirname, '../../frontend/public/Inicio.html'))
   })
 
  app.get("/EAS/localidades", async (req, res) => {
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
  });
 
  app.get("/EAS/localidades/:id", async (req, res) => {
-   const  id  = req.params;
+   const  {id}  = req.params;
    try {
      const localidad = await prisma.localidad.findUnique({
        where: { loc_id: parseInt(id) },
@@ -38,24 +38,25 @@ app.get('/', (req, res) => {
 
  app.post("/EAS/localidades", async (req, res) => {
    
-   try {
-     const nuevaLocalidad = await prisma.localidad.create({
-       data: { 
-         nombre:req.body.nombre,
-         poblacion:req.body.poblacion,
-         estado:req.body.estado,
-         pais:req.body.pais,
-         nivel_de_inseguridad:req.body.nivel_de_inseguridad 
-       }
-     });
-     res.status(201).json(nuevaLocalidad);
-   } catch (error) {
-     res.status(500).json({ error: "Error al crear la localidad" });
-   }
+   
+  try {
+    const nuevaLocalidad = await prisma.localidad.create({
+      data: { 
+        nombre:req.body.nombre,
+        poblacion:req.body.poblacion,
+        estado:req.body.estado,
+        pais:req.body.pais,
+        nivel_de_inseguridad:req.body.nivel_de_inseguridad 
+      }
+    });
+    res.status(201).json(nuevaLocalidad);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear la localidad" });
+  }
  });
   
 app.put("/EAS/localidades/:id", async (req, res) => {
-  const  id  = req.params;
+  const  {id}  = req.params;
   try {
     const ActualizarLocalidad = await prisma.localidad.update({
       where: { loc_id: parseInt(id) },
@@ -75,7 +76,7 @@ app.put("/EAS/localidades/:id", async (req, res) => {
 });
 
 app.delete("/api/localidades/:id", async (req, res) => {
-  const  id  = req.params;
+  const  {id}  = req.params;
   try {
     await prisma.localidad.delete({
       where: { loc_id: parseInt(id) },
