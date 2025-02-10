@@ -6,7 +6,7 @@ document.getElementById('crimenForm').addEventListener('submit', function(event)
         crimen: document.getElementById('crimen').value,
         loc_id: parseInt(document.getElementById('loc_id').value),
         vill_id: parseInt(document.getElementById('vill_id').value),
-        en_curso: document.getElementById('en_curso').value === 'true'
+        en_curso: 'true'
     };
 
     fetch('http://localhost:3000/EAS/crimenes', {
