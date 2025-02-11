@@ -5,8 +5,9 @@ const PORT = 3000;
 const prisma = new PrismaClient();
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Equipo de Apoyo de Superheroes')
+app.get('/', async (req, res) => {
+
+  res.send('Equipo de Apoyo de Superheroes')
   })
 
  app.get("/EAS/localidades", async (req, res) => {
@@ -220,6 +221,41 @@ app.delete("/EAS/crimenes/:id", async (req, res) => {
         res.status(500).json({error: "Error al eliminar el crimen"});
     }
 });
+
+app.get('/EAS/v1/Lista_Criminales', async (req, res) => {
+  const Lista_criminales = await prisma.criminal.findMany();
+  res.json(Lista_criminales);
+})
+
+app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
+  const Lista_criminales = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  });
+
+  if (Lista_criminales === null){
+    res.sendStatus(404);
+    return;
+  }
+
+  res.json(Lista_criminales);  
+})
+
+app.post('/EAS/v1/Lista_Criminales', async (req,res) => {
+  const Criminal = await prisma.criminal.create({
+    data: {
+      nombre: req.body.nombre,          
+      nivel_de_poder: req.body.nivel_poder,  
+      numero_de_miembros: req.body.cantidad_miembros,
+      loc_id: req.body.loc_id,
+      capturado: req.body.capturado,    
+      villano_img: req.body.villano_img    
+    }
+  })
+
+  res.status(201).send(user);
+})
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
