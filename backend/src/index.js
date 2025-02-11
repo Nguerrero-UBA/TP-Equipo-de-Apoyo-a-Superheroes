@@ -285,6 +285,7 @@ app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
 
 
 app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
+  try {
   let criminal_actualizar = await prisma.criminal.findUnique({
     where: {
       id: parseInt(req.params.id)
@@ -307,13 +308,13 @@ app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
       capturado: req.body.capturado,
       villano_img: req.body.villano_img
     }
-  }) 
+  });
 
-  res.send(criminal_actualizar);
-} catch (error) {
-    res.status(500).json({ error: "Error al actualizar el criminal" });
+    res.send(criminal_actualizar);
+  } catch (error) {
+  res.status(500).json({ error: "Error al actualizar el criminal" });
   }
-});
+})
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
