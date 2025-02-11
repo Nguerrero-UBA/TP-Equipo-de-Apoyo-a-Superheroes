@@ -63,3 +63,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 console.log("test")
+
+
+async function cargarCrimenesEnCurso() {
+    const listaCrimenes = document.getElementById("lista-crimenes");
+
+    try {
+        // solicitud al back para obtener los crímenes en curso
+        const response = await fetch("http://localhost:3000/EAS/crimenes?en_curso=true");
+        const crimenes = await response.json();
+        
+        listaCrimenes.innerHTML = "";
+
+        // Mostrar un "template" con cada crimen
+        crimenes.forEach(crimen => {
+            const crimenCard = document.createElement("div");
+            crimenCard.className = "col-md-4 mb-4";
+            crimenCard.innerHTML = `
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">${crimen.crimen}</h5>
+                        <p class="card-text"><strong>Víctima:</strong> ${crimen.victima}</p>
+                        <p class="card-text"><strong>Ubicación:</strong> ${crimen.localidad.nombre}</p>
+                        <p class="card-text"><strong>Criminal:</strong> ${crimen.criminal.nombre}</p>
+                        <p class="card-text"><strong>Estado:</strong> ${crimen.en_curso ? "En curso" : "Resuelto"}</p>
+                    </div>
+                </div>
+            `;
+            listaCrimenes.appendChild(crimenCard);
+        });
+    } catch (error) {
+        console.error("Error al cargar los crímenes en curso:", error);
+        }    
+    }
+
+
+
+document.addEventListener("DOMContentLoaded", cargarCrimenesEnCurso);
