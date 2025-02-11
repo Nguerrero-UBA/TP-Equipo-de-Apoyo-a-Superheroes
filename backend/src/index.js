@@ -242,19 +242,18 @@ app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
   res.json(Lista_criminales);  
 })
 
-app.post('/EAS/v1/Lista_Criminales', async (req,res) => {
+app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
   const Criminal = await prisma.criminal.create({
     data: {
-      nombre: req.body.nombre,          
+      nombre:         req.body.nombre,          
       nivel_de_poder: req.body.nivel_poder,  
       numero_de_miembros: req.body.cantidad_miembros,
-      loc_id: req.body.loc_id,
-      capturado: req.body.capturado,    
+      capturado:   req.body.capturado,    
       villano_img: req.body.villano_img    
     }
   })
 
-  res.status(201).send(user);
+  res.status(201).send(Criminal);
 })
 
 app.listen(PORT, () => {
