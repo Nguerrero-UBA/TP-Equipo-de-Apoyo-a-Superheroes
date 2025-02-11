@@ -156,7 +156,7 @@ app.delete("/EAS/heroes/:id", async (req, res) => {
 
 app.get("/EAS/crimenes", async (req, res) => {
     try {
-        const crimenes = await prisma.Crimen.findMany();
+        const crimenes = await prisma.crimen.findMany();
         res.json(crimenes);
     } catch (error) {
         console.error(error); // Esto imprimirá el error en la consola para ayudarte a depurar
@@ -225,6 +225,94 @@ app.delete("/EAS/crimenes/:id", async (req, res) => {
     } catch (error) {
         res.status(500).json({error: "Error al eliminar el crimen"});
     }
+});
+
+app.get('/EAS/v1/Lista_Criminales', async (req, res) => {
+  const Lista_criminales = await prisma.criminal.findMany();
+  res.json(Lista_criminales);
+})
+
+app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
+  const Lista_criminales = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  });
+
+  if (Lista_criminales === null){
+    res.sendStatus(404);
+    return;
+  }
+
+  res.json(Lista_criminales);  
+})
+
+app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
+  const Criminal = await prisma.criminal.create({
+    data: {
+      nombre:         req.body.nombre,          
+      nivel_de_poder: req.body.nivel_poder,  
+      numero_de_miembros: req.body.cantidad_miembros,
+      capturado:   req.body.capturado,    
+      villano_img: req.body.villano_img    
+    }
+  })
+
+  res.status(201).send(Criminal);
+})
+
+
+app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
+  const criminal_eliminar = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  if (criminal_eliminar === null){
+    res.sendStatus(404);
+    return;
+  }
+
+  await prisma.criminal.delete({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  res.send(criminal_eliminar);
+})
+
+
+app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
+  let criminal_actualizar = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  if (criminal_actualizar == null){
+    res.sendStatus(404);
+    return;
+  }
+
+  criminal_actualizar = prisma.criminal.update({
+    where: {
+      id: parseInt(req.params.id)
+    },
+    data: {
+      nombre: req.body.nombre,
+      nivel_de_poder: req.body.nivel_de_poder,
+      numero_de_miembros: req.body.numero_de_miembros,
+      capturado: req.body.capturado,
+      villano_img: req.body.villano_img
+    }
+  }) 
+
+  res.send(criminal_actualizar);
+} catch (error) {
+    res.status(500).json({ error: "Error al actualizar el criminal" });
+  }
 });
 
 app.listen(PORT, () => {
