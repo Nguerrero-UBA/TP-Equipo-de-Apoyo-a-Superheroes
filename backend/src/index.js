@@ -159,7 +159,7 @@ app.get("/EAS/crimenes", async (req, res) => {
         const crimenes = await prisma.crimen.findMany();
         res.json(crimenes);
     } catch (error) {
-        console.error(error); // Esto imprimirá el error en la consola para ayudarte a depurar
+        console.error(error); 
         res.status(500).json({ error: "Error al obtener los crimenes", details: error.message });
     }
 });
