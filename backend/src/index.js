@@ -256,6 +256,57 @@ app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
   res.status(201).send(Criminal);
 })
 
+
+app.delete('EAS/v1/Lista_Criminales/:id', async (req, res) => {
+  const criminal_eliminar = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  if (criminal_eliminar === null){
+    res.sendStatus(404);
+    return;
+  }
+
+  await prisma.criminal.delete({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  res.send(criminal_eliminar);
+})
+
+
+app.put('EAS/v1/Lista_Criminales', async (req, res) => {
+  let criminal_actualizar = await prisma.criminal.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+
+  if (criminal_actualizar == null){
+    res.sendStatus(404);
+    return;
+  }
+
+  criminal_actualizar = prisma.criminal.update({
+    where: {
+      id: criminal.id
+    },
+    data: {
+      nombre: req.body.nombre,
+      nivel_de_poder: req.body.nivel_de_poder,
+      numero_de_miembros: req.body.numero_de_miembros,
+      capturado: req.body.capturado,
+      villano_img: req.body.villano_img
+    }
+  }) 
+
+  res.send(criminal_actualizar);
+})
+
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
 }); 
