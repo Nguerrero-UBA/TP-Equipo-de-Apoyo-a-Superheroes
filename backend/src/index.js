@@ -286,7 +286,8 @@ app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
 
 app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
   try {
-  let criminal_actualizar = await prisma.criminal.findUnique({
+   let criminal_actualizar = await prisma.criminal.findUnique({
+
     where: {
       id: parseInt(req.params.id)
     }
