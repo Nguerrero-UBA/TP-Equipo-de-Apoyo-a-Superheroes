@@ -38,8 +38,8 @@ model Hero {
 model Criminal {
   vill_id         Int    @id @default(autoincrement())
   nombre          String
-  nivel_de_poder  Int @default(0)
-  numero_de_miembros Int  @default(0)
+  nivel_de_poder  Int
+  numero_de_miembros Int
   localidad       Localidad @relation(fields: [loc_id], references: [loc_id])
   loc_id         Int
   capturado      Boolean @default(false)
