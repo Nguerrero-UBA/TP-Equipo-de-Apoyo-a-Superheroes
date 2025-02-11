@@ -32,7 +32,7 @@ nav ul li a {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background-color: white;
+    
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -67,3 +67,4 @@ button {
 button:hover {
     background-color: #555;
 }
+
