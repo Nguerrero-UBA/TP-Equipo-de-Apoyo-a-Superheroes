@@ -5,9 +5,13 @@ const PORT = 3000;
 const prisma = new PrismaClient();
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+const path = require('path');
+app.use(express.static(path.join(__dirname,'../../frontend/public')));
 
-  res.send('Equipo de Apoyo de Superheroes')
+app.use(express.static(path.join(__dirname, '../../frontend')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/public/Inicio.html'))
   })
 
  app.get("/EAS/localidades", async (req, res) => {
@@ -20,7 +24,7 @@ app.get('/', async (req, res) => {
  });
 
  app.get("/EAS/localidades/:id", async (req, res) => {
-   const  id  = req.params;
+   const  {id}  = req.params;
    try {
      const localidad = await prisma.localidad.findUnique({
        where: { loc_id: parseInt(id) },
@@ -36,24 +40,25 @@ app.get('/', async (req, res) => {
 
  app.post("/EAS/localidades", async (req, res) => {
    
-   try {
-     const nuevaLocalidad = await prisma.localidad.create({
-       data: { 
-         nombre:req.body.nombre,
-         poblacion:req.body.poblacion,
-         estado:req.body.estado,
-         pais:req.body.pais,
-         nivel_de_inseguridad:req.body.nivel_de_inseguridad 
-       }
-     });
-     res.status(201).json(nuevaLocalidad);
-   } catch (error) {
-     res.status(500).json({ error: "Error al crear la localidad" });
-   }
+   
+  try {
+    const nuevaLocalidad = await prisma.localidad.create({
+      data: { 
+        nombre:req.body.nombre,
+        poblacion:req.body.poblacion,
+        estado:req.body.estado,
+        pais:req.body.pais,
+        nivel_de_inseguridad:req.body.nivel_de_inseguridad 
+      }
+    });
+    res.status(201).json(nuevaLocalidad);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear la localidad" });
+  }
  });
   
 app.put("/EAS/localidades/:id", async (req, res) => {
-  const  id  = req.params;
+  const  {id}  = req.params;
   try {
     const ActualizarLocalidad = await prisma.localidad.update({
       where: { loc_id: parseInt(id) },
@@ -73,7 +78,7 @@ app.put("/EAS/localidades/:id", async (req, res) => {
 });
 
 app.delete("/api/localidades/:id", async (req, res) => {
-  const  id  = req.params;
+  const  {id}  = req.params;
   try {
     await prisma.localidad.delete({
       where: { loc_id: parseInt(id) },
@@ -151,7 +156,7 @@ app.delete("/EAS/heroes/:id", async (req, res) => {
 
 app.get("/EAS/crimenes", async (req, res) => {
     try {
-        const crimenes = await prisma.Crimen.findMany();
+        const crimenes = await prisma.crimen.findMany();
         res.json(crimenes);
     } catch (error) {
         console.error(error); // Esto imprimirá el error en la consola para ayudarte a depurar
@@ -257,7 +262,7 @@ app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
 })
 
 
-app.delete('EAS/v1/Lista_Criminales/:id', async (req, res) => {
+app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
   const criminal_eliminar = await prisma.criminal.findUnique({
     where: {
       id: parseInt(req.params.id)
@@ -279,7 +284,7 @@ app.delete('EAS/v1/Lista_Criminales/:id', async (req, res) => {
 })
 
 
-app.put('EAS/v1/Lista_Criminales', async (req, res) => {
+app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
   let criminal_actualizar = await prisma.criminal.findUnique({
     where: {
       id: parseInt(req.params.id)
@@ -293,7 +298,7 @@ app.put('EAS/v1/Lista_Criminales', async (req, res) => {
 
   criminal_actualizar = prisma.criminal.update({
     where: {
-      id: criminal.id
+      id: parseInt(req.params.id)
     },
     data: {
       nombre: req.body.nombre,
@@ -305,8 +310,12 @@ app.put('EAS/v1/Lista_Criminales', async (req, res) => {
   }) 
 
   res.send(criminal_actualizar);
-})
+} catch (error) {
+    res.status(500).json({ error: "Error al actualizar el criminal" });
+  }
+});
 
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
 }); 
+

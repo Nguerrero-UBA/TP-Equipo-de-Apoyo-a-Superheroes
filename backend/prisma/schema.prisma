@@ -49,7 +49,7 @@ model Criminal {
 
 model Crimen {
   crimen_id     Int    @id @default(autoincrement())
-  victima       String
+  victima       Int
   crimen        String
   localidad     Localidad @relation(fields: [loc_id], references: [loc_id])
   loc_id        Int

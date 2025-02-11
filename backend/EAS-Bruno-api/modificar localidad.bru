@@ -1,0 +1,25 @@
+meta {
+  name: modificar localidad
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/EAS/localidades/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  {
+    "nombre":"Kiev",
+    "poblacion":2954300,
+    "estado":"Kiev",
+    "pais":"Ukrania",
+    "nivel_de_inseguridad":10
+  }
+}
