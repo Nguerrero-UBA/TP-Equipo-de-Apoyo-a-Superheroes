@@ -210,11 +210,47 @@ if(document.getElementById('Capturados')){
         }
     });
 }
+if(document.getElementById('Heores')){
+    document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("heroes-container");
 
-// const response = await fetch("/api/criminales/capturados");
-// const criminalesCapturados = await response.json();
+        try {
 
-// // Mostrar los criminales capturados en la página
-// criminalesCapturados.forEach(criminal => {
-//   console.log(criminal.nombre);
-// });
+            const response = await fetch('http://localhost:3000/EAS/heroes');
+            const heroes = await response.json();
+
+            if (!Array.isArray(heroes)) {
+                console.error("La API no devolvió una lista de heroes.");
+                return;
+            }
+
+
+            if (heroes.length === 0) {
+                container.innerHTML = "<p class='text-light text-center'>No tenemos heroes reclutados.</p>";
+                return;
+            }
+
+            heroes.forEach(heroe => {
+                const card = document.createElement("div");
+                card.classList.add("col-md-4");
+
+                card.innerHTML = `
+                    <div class="card p-1 text-bg-secondary shadow-lg" style="padding: 10px; margin:20px;" >
+                        <img src="${heroe.hero_img || 'https://via.placeholder.com/150'}" class="card-img-top" alt="${heroe.Nombre}">
+                        <div class="card-body p-3">
+                            <h5 class="card-title"><strong>${heroe.Nombre}</strong></h5>
+                            <p class="card-text"><strong>Nivel de Poder:</strong> ${heroe.nivel_de_poder}</p>
+                            <p class="card-text"><strong>Localidad:</strong> ${heroe.localidad.nombre}</p>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Error al obtener los Heroes: ", error);
+            //container.innerHTML = "<p class='text-light text-center'>Error al cargar la lista.</p>";
+        }
+    });
+}
+

@@ -92,7 +92,9 @@ app.delete("/EAS/localidades/:id", async (req, res) => {
 
 app.get("/EAS/heroes", async (req, res) => {
   try {
-      const heroe = await prisma.hero.findMany();
+      const heroe = await prisma.hero.findMany({
+        include:{localidad:true}
+      });
       res.json(heroe);
   } catch (error) {
       console.error(error); 
