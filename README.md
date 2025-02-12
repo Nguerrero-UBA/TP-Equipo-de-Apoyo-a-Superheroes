@@ -23,6 +23,7 @@ Para iniciar la base de datos por primera vez, seguir estos pasos:
 - Una vez que se creo el .env con la informacion correcta, ejecutar el docker compose con el comando `docker compose up -d --build`(puede ser que no tenga suficientes permisos, si ese es el caso usar sudo)
 - Entra a la carpeta del backend con `cd backend`
 - Ahora que se creo el volumen local, realiza `npm install` por si no lo tenes instalado localmente
+- Generar prisma con `npx prisma generate` 
 - Hacer la migracion de la base de datos con `npx prisma migrate dev`
 - Finalmente para iniciar el servidor de manera local, realiza `npm run dev`. Esto inicia el servidor en http://localhost:3000/
 
