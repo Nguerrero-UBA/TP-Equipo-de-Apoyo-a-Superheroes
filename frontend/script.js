@@ -72,7 +72,9 @@ async function cargarCrimenesEnCurso() {
         // solicitud al back para obtener los crímenes en curso
         const response = await fetch("http://localhost:3000/EAS/crimenes?en_curso=true");
         const crimenes = await response.json();
-        
+        const heroesResponse = await fetch("http://localhost:3000/EAS/heroes?ocupado=false");
+        const heroes = await heroesResponse.json();       
+
         listaCrimenes.innerHTML = "";
 
         // Mostrar un "template" con cada crimen
@@ -87,11 +89,45 @@ async function cargarCrimenesEnCurso() {
                         <p class="card-text"><strong>Ubicación:</strong> ${crimen.localidad.nombre}</p>
                         <p class="card-text"><strong>Criminal:</strong> ${crimen.criminal.nombre}</p>
                         <p class="card-text"><strong>Estado:</strong> ${crimen.en_curso ? "En curso" : "Resuelto"}</p>
+                    
+                        <form class="assign-hero-form">
+                                <label for="heroSelect-${crimen.crimen_id}">Asignar Héroe:</label>
+                                <select class="form-select mb-2" id="heroSelect-${crimen.crimen_id}">
+                                    <option value="">Seleccione un héroe</option>
+                                    ${heroes.map(hero => `<option value="${hero.id}">${hero.Nombre}</option>`).join('')}
+                                </select>
+                                <button type="submit" class="btn btn-primary">Asignar</button>
+                        </form>
                     </div>
                 </div>
             `;
             listaCrimenes.appendChild(crimenCard);
         });
+        document.querySelectorAll('.assign-hero-form').forEach(form => {
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const crimenId = this.querySelector('select').id.split('-')[1];
+                const heroId = this.querySelector('select').value;
+                
+                if (!heroId) {
+                    alert('Seleccione un héroe antes de asignar.');
+                    return;
+                }
+                
+                try {
+                    await fetch(`http://localhost:3000/EAS/asignar-hero`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ crimen_id: parseInt(crimenId), hero_id: parseInt(heroId) })
+                    });
+                    alert('Héroe asignado con éxito!');
+                    cargarCrimenesEnCurso();
+                } catch (error) {
+                    console.error('Error al asignar héroe:', error);
+                }
+            });
+        });
+
     } catch (error) {
         console.error("Error al cargar los crímenes en curso:", error);
         }    
