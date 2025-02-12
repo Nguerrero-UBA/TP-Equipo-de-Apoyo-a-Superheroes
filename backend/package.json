@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js" ,
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,11 +19,11 @@
   },
   "homepage": "https://github.com/Nguerrero-UBA/TP-Equipo-de-Apoyo-a-Superheroes#readme",
   "dependencies": {
-    "@prisma/client": "^6.3.0",
+    "@prisma/client": "^6.3.1",
     "express": "^4.21.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",
-    "prisma": "^6.3.0"
+    "prisma": "^6.3.1"
   }
 }

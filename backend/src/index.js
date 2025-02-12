@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 app.use(express.json());
 
 const path = require('path');
+const { connect } = require('http2');
 app.use(express.static(path.join(__dirname,'../../frontend/public')));
 
 app.use(express.static(path.join(__dirname, '../../frontend')));
@@ -77,7 +78,7 @@ app.put("/EAS/localidades/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/localidades/:id", async (req, res) => {
+app.delete("/EAS/localidades/:id", async (req, res) => {
   const  {id}  = req.params;
   try {
     await prisma.localidad.delete({
@@ -91,11 +92,24 @@ app.delete("/api/localidades/:id", async (req, res) => {
 
 app.post("/EAS/heroes", async (req, res) => {
   try {
-    const nuevoHeroe = await prisma.heroe.create({
+    const localidadExistente = await prisma.localidad.findUnique({
+      where: {
+        loc_id: req.body.loc_id,
+      },
+    });
+
+    if (!localidadExistente) {
+      return res.status(400).json({ error: "La localidad no existe" });
+    }
+    const nuevoHeroe = await prisma.hero.create({
       data: {
         nombre: req.body.nombre,
         nivel_poder: req.body.nivel_poder,
-        lugar_id: req.body.lugar_id, 
+        localidad: {
+          connect: {
+            loc_id: req.body.loc_id,
+          },
+        }, 
         ocupado: req.body.ocupado,
         hero_img: req.body.hero_img,
       },
@@ -109,7 +123,7 @@ app.post("/EAS/heroes", async (req, res) => {
 app.get("/EAS/heroes/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const heroe = await prisma.heroe.findUnique({
+    const heroe = await prisma.hero.findUnique({
       where: { hero_id: parseInt(id) },
       include: { lugar: true }, 
     });
@@ -125,12 +139,25 @@ app.get("/EAS/heroes/:id", async (req, res) => {
 app.put("/EAS/heroes/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const heroeActualizado = await prisma.heroe.update({
+    const localidadExistente = await prisma.localidad.findUnique({
+      where: {
+        loc_id: req.body.loc_id,
+      },
+    });
+
+    if (!localidadExistente) {
+      return res.status(400).json({ error: "La localidad no existe" });
+    }
+    const heroeActualizado = await prisma.hero.update({
       where: { hero_id: parseInt(id) },
       data: {
         nombre: req.body.nombre,
         nivel_poder: req.body.nivel_poder,
-        lugar_id: req.body.lugar_id, 
+        localidad: {
+          connect: {
+            loc_id: req.body.loc_id,
+          },
+        },  
         ocupado: req.body.ocupado,
         hero_img: req.body.hero_img,
       },
@@ -145,7 +172,7 @@ app.put("/EAS/heroes/:id", async (req, res) => {
 app.delete("/EAS/heroes/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    await prisma.heroe.delete({
+    await prisma.hero.delete({
       where: { hero_id: parseInt(id) },
     });
     res.json({ message: "Héroe eliminado correctamente" });
@@ -181,12 +208,38 @@ app.get("/EAS/crimenes/:id", async (req, res) => {
 
 app.post("/EAS/crimenes", async (req, res) => {
     try {
+      const localidadExistente = await prisma.localidad.findUnique({
+        where: {
+          loc_id: req.body.loc_id,
+        },
+      });
+  
+      if (!localidadExistente) {
+        return res.status(400).json({ error: "La localidad no existe" });
+      }
+      const criminalExistente = await prisma.criminal.findUnique({
+        where: {
+          vill_id: req.body.vill_id,
+        },
+      });
+  
+      if (!criminalExistente) {
+        return res.status(400).json({ error: "El criminal no existe" });
+      }
         const nuevoCrimen = await prisma.crimen.create({
             data: {
                 victima: req.body.victima,
                 crimen: req.body.crimen,
-                loc_id: req.body.loc_id,
-                vill_id: req.body.vill_id,
+                localidad: {
+                  connect: {
+                    loc_id: req.body.loc_id,
+                  },
+                },
+                criminal:{
+                  connect:{
+                    vill_id: req.body.vill_id
+                  }
+                },
                 en_curso: req.body.en_curso
             },
         });
@@ -199,12 +252,25 @@ app.post("/EAS/crimenes", async (req, res) => {
 app.put("/EAS/crimenes/:id", async (req, res) => {
     const { id } = req.params;
     try {
+      const localidadExistente = await prisma.localidad.findUnique({
+        where: {
+          loc_id: req.body.loc_id,
+        },
+      });
+  
+      if (!localidadExistente) {
+        return res.status(400).json({ error: "La localidad no existe" });
+      }
         const crimenActualizado = await prisma.crimen.update({
             where: {crimen_id: parseInt(id)},
             data: {
                 victima: req.body.victima,
                 crimen: req.body.crimen,
-                loc_id: req.body.loc_id,
+                localidad: {
+                  connect: {
+                    loc_id: req.body.loc_id,
+                  },
+                },
                 vill_id: req.body.vill_id,
                 en_curso: req.body.en_curso
             },
@@ -233,9 +299,11 @@ app.get('/EAS/v1/Lista_Criminales', async (req, res) => {
 })
 
 app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
+   const { id }=req.params
+   vill_id=parseInt(id,10)
   const Lista_criminales = await prisma.criminal.findUnique({
     where: {
-      id: parseInt(req.params.id)
+      vill_id: vill_id
     }
   });
 
@@ -248,18 +316,40 @@ app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
 })
 
 app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
-  const Criminal = await prisma.criminal.create({
-    data: {
-      nombre:         req.body.nombre,          
-      nivel_de_poder: req.body.nivel_poder,  
-      numero_de_miembros: req.body.cantidad_miembros,
-      capturado:   req.body.capturado,    
-      villano_img: req.body.villano_img    
-    }
-  })
+  try {
+    
+    const localidadExistente = await prisma.localidad.findUnique({
+      where: {
+        loc_id: req.body.loc_id,
+      },
+    });
 
-  res.status(201).send(Criminal);
-})
+    if (!localidadExistente) {
+      return res.status(400).json({ error: "La localidad no existe" });
+    }
+
+    
+    const Criminal = await prisma.criminal.create({
+      data: {
+        nombre: req.body.nombre,
+        nivel_de_poder: req.body.nivel_poder,
+        numero_de_miembros: req.body.cantidad_miembros,
+        capturado: req.body.capturado,
+        villano_img: req.body.villano_img,
+        localidad: {
+          connect: {
+            loc_id: req.body.loc_id,
+          },
+        },
+      },
+    });
+
+    res.status(201).send(Criminal);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al crear el criminal", details: error.message });
+  }
+});
 
 
 app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
@@ -284,37 +374,87 @@ app.delete('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
 })
 
 
-app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
+app.put('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
+  const { id } = req.params;
+
   try {
-  let criminal_actualizar = await prisma.criminal.findUnique({
-    where: {
-      id: parseInt(req.params.id)
+    
+    const criminalExistente = await prisma.criminal.findUnique({
+      where: {
+        vill_id: parseInt(id, 10),
+      },
+    });
+
+    if (!criminalExistente) {
+      return res.status(404).json({ error: "Criminal no encontrado" });
     }
-  })
 
-  if (criminal_actualizar == null){
-    res.sendStatus(404);
-    return;
-  }
+    
+    const localidadExistente = await prisma.localidad.findUnique({
+      where: {
+        loc_id: req.body.loc_id,
+      },
+    });
 
-  criminal_actualizar = prisma.criminal.update({
-    where: {
-      id: parseInt(req.params.id)
-    },
-    data: {
-      nombre: req.body.nombre,
-      nivel_de_poder: req.body.nivel_de_poder,
-      numero_de_miembros: req.body.numero_de_miembros,
-      capturado: req.body.capturado,
-      villano_img: req.body.villano_img
+    if (!localidadExistente) {
+      return res.status(400).json({ error: "La localidad no existe" });
     }
-  });
 
-    res.send(criminal_actualizar);
+    
+    const criminalActualizado = await prisma.criminal.update({
+      where: {
+        vill_id: parseInt(id, 10), 
+      },
+      data: {
+        nombre: req.body.nombre,
+        nivel_de_poder: req.body.nivel_de_poder,
+        numero_de_miembros: req.body.numero_de_miembros,
+        capturado: req.body.capturado,
+        villano_img: req.body.villano_img,
+        localidad: {
+          connect: {
+            loc_id: req.body.loc_id,
+          },
+        },
+      },
+    });
+
+   
+    res.status(200).json(criminalActualizado);
   } catch (error) {
-  res.status(500).json({ error: "Error al actualizar el criminal" });
+    console.error(error); 
+    res.status(500).json({ error: "Error al actualizar el criminal", details: error.message });
   }
-})
+});
+
+
+app.get('/EAS/v1/Lista_criminales/capturados/:estado', async (req, res) => {
+  try {
+    const { estado } = req.params;
+
+    
+    const capturado = estado === "true"; 
+
+    
+    const criminales = await prisma.criminal.findMany({
+      where: {
+        capturado: capturado,
+        
+      },
+      include:{
+        localidad:true
+      }
+    });
+
+    
+    res.status(200).json(criminales);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener la lista de criminales" });
+  }
+});
+
+
 
 app.post('/EAS/asignar-hero', async (req, res) => {
   const { crimen_id, hero_id } = req.body;
