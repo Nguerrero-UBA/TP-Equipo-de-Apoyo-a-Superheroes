@@ -135,6 +135,76 @@ async function cargarCrimenesEnCurso() {
         }    
     }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleSwitch = document.getElementById('toggleSwitch');
+    const toggleLabel = document.getElementById('toggleLabel');
+    const crimenForm = document.getElementById('crimenForm');
+    const criminalForm = document.getElementById('criminalForm');
+    const divCrimenForm = document.getElementById('divCrimenForm');
+    const titulo = document.getElementById('titulo');
+    const divCriminalForm = document.getElementById('divCriminalForm');
+
+    toggleSwitch.addEventListener('change', () => {
+        if (toggleSwitch.checked) {
+            divCriminalForm.style.display = 'block';
+            crimenForm.style.display = 'none';
+            divCrimenForm.style.display = 'none';
+            criminalForm.style.display = 'block';
+            toggleLabel.textContent = 'Crear Crimen/Criminal';
+            titulo.style.display = 'block';
+        } else {
+            divCriminalForm.style.display = 'none';
+            crimenForm.style.display = 'block';
+            criminalForm.style.display = 'none';
+            toggleLabel.textContent = 'Crear Crimen/Criminal';
+            divCrimenForm.style.display = 'block';
+            titulo.style.display = 'none';
+        }
+    });
+    
+    const selectLocCriminal = document.getElementById("SelectLocCriminal");
+    fetch("http://localhost:3000/EAS/localidades")
+        .then(response => response.json())
+        .then(localidades => {
+            localidades.forEach(localidad => {
+                let option = document.createElement("option");
+                option.value = localidad.loc_id;
+                option.textContent = localidad.nombre;
+                selectLocCriminal.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error al cargar localidades:", error));
+        
+        criminalForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const criminalData = {
+            nombre: document.getElementById('InputNombre').value,
+            nivel_de_poder: parseInt(document.getElementById('InputPoder').value),
+            numero_de_miembros: parseInt(document.getElementById('InputMiembros').value),
+            loc_id: parseInt(document.getElementById('SelectLocCriminal').value),
+            capturado: false
+        };
+
+        fetch('http://localhost:3000/EAS/criminales', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(criminalData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Criminal creado exitosamente');
+            console.log(data);
+            criminalForm.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un error al crear el criminal');
+        });
+    });
+});
 
 if(document.getElementById('Crimenes')){
     document.addEventListener("DOMContentLoaded", cargarCrimenesEnCurso);
@@ -188,6 +258,7 @@ if(document.getElementById('Capturados')){
 
 // const response = await fetch("/api/criminales/capturados");
 // const criminalesCapturados = await response.json();
+
 
 // // Mostrar los criminales capturados en la página
 // criminalesCapturados.forEach(criminal => {
