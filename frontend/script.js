@@ -262,7 +262,7 @@ if(document.getElementById('Capturados')){
     
                 card.innerHTML = `
                     <div class="card p-1 text-bg-secondary h-100  shadow-lg" style="padding: 10px; margin:20px;" >
-                        <img src="${criminal.villano_img || 'https://via.placeholder.com/150'}" class="card-img-top" alt="${criminal.nombre}">
+                        <img src="${criminal.villano_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${criminal.nombre}">
                         <div class="card-body p-3">
                             <h5 class="card-title"><strong>${criminal.nombre}</strong></h5>
                             <p class="card-text"><strong>Nivel de Poder:</strong> ${criminal.nivel_de_poder}</p>
@@ -306,7 +306,7 @@ if(document.getElementById('Heores')){
 
                 card.innerHTML = `
                     <div class="card p-1 text-bg-secondary shadow-lg" style="padding: 10px; margin:20px;" >
-                        <img src="${heroe.hero_img || 'https://via.placeholder.com/150'}" class="card-img-top" alt="${heroe.Nombre}">
+                        <img src="${heroe.hero_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${heroe.Nombre}">
                         <div class="card-body p-3">
                             <h5 class="card-title"><strong>${heroe.Nombre}</strong></h5>
                             <p class="card-text"><strong>Nivel de Poder:</strong> ${heroe.nivel_de_poder}</p>
