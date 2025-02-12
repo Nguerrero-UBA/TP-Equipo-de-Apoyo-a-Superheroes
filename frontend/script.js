@@ -323,4 +323,7 @@ if(document.getElementById('Heores')){
         }
     });
 }
+Capturar_criminal_script
+
+
 
