@@ -316,6 +316,28 @@ app.put('/EAS/v1/Lista_Criminales', async (req, res) => {
   }
 })
 
+app.post('/EAS/asignar-hero', async (req, res) => {
+  const { crimen_id, hero_id } = req.body;
+
+  try {
+      await prisma.crimen.update({
+          where: { crimen_id },
+          data: { en_curso: false } 
+      });
+
+      await prisma.hero.update({
+          where: { id: hero_id },
+          data: { ocupado: true }
+      });
+
+      res.json({ message: 'Héroe asignado correctamente' });
+  } catch (error) {
+      console.error('Error al asignar héroe:', error);
+      res.status(500).json({ error: 'No se pudo asignar el héroe' });
+  }
+});
+
+
 app.listen(PORT, () => {
     console.log("Server listening on PORT", PORT);
 }); 
