@@ -3,12 +3,14 @@ if(document.getElementById('Inicio')){
         event.preventDefault();
 
         const crimenData = {
-            victima: document.getElementById('victima').value,
-            crimen: document.getElementById('crimen').value,
-            loc_id: document.getElementById('SelectLoc').value,
-            vill_id: document.getElementById('SelectVill').value,
-            en_curso: 'true'
+            victima: parseInt(document.getElementById('InputDNI').value), 
+            crimen: document.getElementById('InputCrimen').value, 
+            loc_id: parseInt(document.getElementById('SelectLoc').value), 
+            vill_id: parseInt(document.getElementById('SelectVill').value), 
+            
         };
+        console.log(crimenData);
+       
 
         fetch('http://localhost:3000/EAS/crimenes', {
             method: 'POST',
@@ -19,8 +21,12 @@ if(document.getElementById('Inicio')){
         })
         .then(response => response.json())
         .then(data => {
-            alert('Crimen creado exitosamente');
-            console.log(data);
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                alert('Crimen creado exitosamente');
+                console.log(data);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -38,6 +44,7 @@ if(document.getElementById('Inicio')){
             localidades.forEach(localidad => {
                 let option = document.createElement("option");
                 option.value = localidad.loc_id; 
+                
                 option.textContent = localidad.nombre; 
                 selectLocalidad.appendChild(option);
             });
@@ -50,7 +57,7 @@ if(document.getElementById('Inicio')){
         const selectVillano = document.getElementById("SelectVill");
 
         try {
-            const response = await fetch("http://localhost:3000/EAS/v1/Lista_Criminales");
+            const response = await fetch("http://localhost:3000/EAS/v1/Lista_Criminales/capturados/false");
             const villanos = await response.json();
 
             villanos.forEach(villano => {
@@ -72,7 +79,7 @@ async function cargarCrimenesEnCurso() {
     if(!listaCrimenes) return;
     try {
         // solicitud al back para obtener los crímenes en curso
-        const response = await fetch("http://localhost:3000/EAS/crimenes?en_curso=true");
+        const response = await fetch("http://localhost:3000/EAS/crimenes-encurso?en_curso=true");
         const crimenes = await response.json();
         const heroesResponse = await fetch("http://localhost:3000/EAS/heroes?ocupado=false");
         const heroes = await heroesResponse.json();       
@@ -84,21 +91,22 @@ async function cargarCrimenesEnCurso() {
             const crimenCard = document.createElement("div");
             crimenCard.className = "col-md-4 mb-4";
             crimenCard.innerHTML = `
-                <div class="card bg-secondary text-white">
-                    <div class="card-body">
-                        <h5 class="card-title">${crimen.crimen}</h5>
+                <div class="card bg-warning">
+                    <div class="card-body" data-villano-id="${crimen.criminal.vill_id}">
+                        <h5 class="card-title"><strong>${crimen.crimen}</strong></h5>
                         <p class="card-text"><strong>Víctima:</strong> ${crimen.victima}</p>
                         <p class="card-text"><strong>Ubicación:</strong> ${crimen.localidad.nombre}</p>
                         <p class="card-text"><strong>Criminal:</strong> ${crimen.criminal.nombre}</p>
+                        <p class="card-text"><strong>Nivel de Poder del Criminal:</strong> ${crimen.criminal.nivel_de_poder}</p>
                         <p class="card-text"><strong>Estado:</strong> ${crimen.en_curso ? "En curso" : "Resuelto"}</p>
                     
                         <form class="assign-hero-form">
-                                <label for="heroSelect-${crimen.crimen_id}">Asignar Héroe:</label>
-                                <select class="form-select mb-2" id="heroSelect-${crimen.crimen_id}">
-                                    <option value="">Seleccione un héroe</option>
-                                    ${heroes.map(hero => `<option value="${hero.id}">${hero.Nombre}</option>`).join('')}
-                                </select>
-                                <button type="submit" class="btn btn-primary">Asignar</button>
+                            <label for="heroSelect-${crimen.crimen_id}">Asignar Héroe:</label>
+                            <select class="form-select mb-2" id="heroSelect-${crimen.crimen_id}">
+                                <option value="">Seleccione un héroe</option>
+                                ${heroes.map(hero => `<option value="${hero.id}" data-power="${hero.nivel_de_poder}">${hero.Nombre} (Poder: ${hero.nivel_de_poder})</option>`).join('')}
+                            </select>
+                            <button type="submit" class="btn btn-primary">Asignar</button>
                         </form>
                     </div>
                 </div>
@@ -108,19 +116,36 @@ async function cargarCrimenesEnCurso() {
         document.querySelectorAll('.assign-hero-form').forEach(form => {
             form.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                const crimenId = this.querySelector('select').id.split('-')[1];
-                const heroId = this.querySelector('select').value;
-                
+                const select = this.querySelector('select');
+                const crimenId = select.id.split('-')[1];
+                const heroId = select.value;
+                const heroPower = parseInt(select.options[select.selectedIndex].getAttribute("data-power"));
+                const criminalPower = crimenes.find(c => c.crimen_id == crimenId).criminal.nivel_de_poder;
+
                 if (!heroId) {
                     alert('Seleccione un héroe antes de asignar.');
                     return;
                 }
-                
+                let escapeChance = 0;
+                if (criminalPower > heroPower) {
+                    const powerDifference = criminalPower - heroPower;
+                    escapeChance = Math.min(80, powerDifference * 10); 
+                }
+
+                const escapa = Math.random() * 100 < escapeChance;
+
+                if (escapa) {
+                    alert(`¡El criminal escapó! 
+                           Probabilidad de escape: ${escapeChance}%`);
+                    return; 
+                }
+                const crimenCard = this.closest('.card-body'); 
+                const villId = crimenCard.dataset.villanoId;
                 try {
                     await fetch(`http://localhost:3000/EAS/asignar-hero`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ crimen_id: parseInt(crimenId), hero_id: parseInt(heroId) })
+                        body: JSON.stringify({ crimen_id: parseInt(crimenId), hero_id: parseInt(heroId), vill_id: parseInt(villId) })
                     });
                     alert('Héroe asignado con éxito!');
                     cargarCrimenesEnCurso();
@@ -236,8 +261,8 @@ if(document.getElementById('Capturados')){
                 card.classList.add("col-md-4"); 
     
                 card.innerHTML = `
-                    <div class="card p-1 text-bg-warning h-100  shadow-lg" style="padding: 10px; margin:20px;" >
-                        <img src="${criminal.villano_img || 'https://via.placeholder.com/150'}" class="card-img-top" alt="${criminal.nombre}">
+                    <div class="card p-1 text-bg-secondary h-100  shadow-lg" style="padding: 10px; margin:20px;" >
+                        <img src="${criminal.villano_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${criminal.nombre}">
                         <div class="card-body p-3">
                             <h5 class="card-title"><strong>${criminal.nombre}</strong></h5>
                             <p class="card-text"><strong>Nivel de Poder:</strong> ${criminal.nivel_de_poder}</p>
@@ -255,12 +280,50 @@ if(document.getElementById('Capturados')){
         }
     });
 }
+if(document.getElementById('Heores')){
+    document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("heroes-container");
 
-// const response = await fetch("/api/criminales/capturados");
-// const criminalesCapturados = await response.json();
+        try {
+
+            const response = await fetch('http://localhost:3000/EAS/heroes');
+            const heroes = await response.json();
+
+            if (!Array.isArray(heroes)) {
+                console.error("La API no devolvió una lista de heroes.");
+                return;
+            }
 
 
-// // Mostrar los criminales capturados en la página
-// criminalesCapturados.forEach(criminal => {
-//   console.log(criminal.nombre);
-// });
+            if (heroes.length === 0) {
+                container.innerHTML = "<p class='text-light text-center'>No tenemos heroes reclutados.</p>";
+                return;
+            }
+
+            heroes.forEach(heroe => {
+                const card = document.createElement("div");
+                card.classList.add("col-md-4");
+
+                card.innerHTML = `
+                    <div class="card p-1 text-bg-secondary shadow-lg" style="padding: 10px; margin:20px;" >
+                        <img src="${heroe.hero_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${heroe.Nombre}">
+                        <div class="card-body p-3">
+                            <h5 class="card-title"><strong>${heroe.Nombre}</strong></h5>
+                            <p class="card-text"><strong>Nivel de Poder:</strong> ${heroe.nivel_de_poder}</p>
+                            <p class="card-text"><strong>Localidad:</strong> ${heroe.localidad.nombre}</p>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Error al obtener los Heroes: ", error);
+            
+        }
+    });
+}
+Capturar_criminal_script
+
+
+
