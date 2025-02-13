@@ -27,6 +27,11 @@ jobs:
         run: cd backend && npm install
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          
+      - name: 📦 Instalar dependencias
+        run: cd backend && npm install
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         
 
       - name: 🚀 Publicar en GitHub Pages
