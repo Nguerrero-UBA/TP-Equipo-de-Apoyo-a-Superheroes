@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3000;
 const prisma = new PrismaClient();
 app.use(express.json());
-
+app.use(cors());
 const path = require('path');
 // const { connect } = require('http2');
 app.use(express.static(path.join(__dirname,'../../frontend/public')));
