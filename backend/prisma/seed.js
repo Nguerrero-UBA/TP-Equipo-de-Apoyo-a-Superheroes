@@ -68,7 +68,7 @@ async function main() {
       nivel_de_poder: 100,
       loc_id: localidad1.loc_id,
       ocupado: false,
-      hero_img: 'https://example.com/superman.jpg',
+      hero_img: 'https://i.imgur.com/U6GTsU0.jpeg',
     },
   });
 
@@ -78,7 +78,7 @@ async function main() {
       nivel_de_poder: 90,
       loc_id: localidad2.loc_id,
       ocupado: true,
-      hero_img: 'https://example.com/batman.jpg',
+      hero_img: 'https://i.imgur.com/5i8QPDX.jpeg',
     },
   });
 
@@ -88,7 +88,7 @@ async function main() {
       nivel_de_poder: 85,
       loc_id: localidad3.loc_id,
       ocupado: false,
-      hero_img: 'https://example.com/wonderwoman.jpg',
+      hero_img: 'https://i.imgur.com/5ZaECoy.png',
     },
   });
 
@@ -98,7 +98,7 @@ async function main() {
       nivel_de_poder: 95,
       loc_id: localidad4.loc_id,
       ocupado: true,
-      hero_img: 'https://example.com/flash.jpg',
+      hero_img: 'https://static.wikia.nocookie.net/dcandmarvelheroes/images/d/d9/Flash_Vol_4_1_Textless.jpg/revision/latest/scale-to-width-down/268?cb=20111204171645&path-prefix=es',
     },
   });
 
@@ -140,7 +140,7 @@ async function main() {
       numero_de_miembros: 10,
       loc_id: localidad2.loc_id,
       capturado: true,
-      villano_img: 'https://example.com/joker.jpg',
+      villano_img: 'https://i.imgur.com/PjvFLAt.jpeg',
     },
   });
 
