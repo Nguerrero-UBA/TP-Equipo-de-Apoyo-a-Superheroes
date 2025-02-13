@@ -1,0 +1,31 @@
+name: Deploy Frontend to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  
+
+permissions:
+  contents: write  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: 🔧 Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: 🚀 Publicar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  
+          folder: frontend/public     # Cambia "public" si tus archivos están en otra carpeta
