@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+  // Crear localidades
   const localidad1 = await prisma.localidad.create({
     data: {
       nombre: 'Ciudad Central',
@@ -14,7 +15,7 @@ async function main() {
 
   const localidad2 = await prisma.localidad.create({
     data: {
-      nombre: 'Villa Oscura',
+      nombre: 'Gotham City',
       poblacion: 120000,
       estado: 'Estado B',
       pais: 'País Y',
@@ -62,6 +63,7 @@ async function main() {
     },
   });
 
+  // Crear héroes
   const hero1 = await prisma.hero.create({
     data: {
       Nombre: 'SuperMan',
@@ -108,7 +110,7 @@ async function main() {
       nivel_de_poder: 85,
       loc_id: localidad5.loc_id,
       ocupado: false,
-      hero_img: 'https://example.com/greenlantern.jpg',
+      hero_img: 'https://placehold.co/600x400/png',
     },
   });
 
@@ -118,10 +120,11 @@ async function main() {
       nivel_de_poder: 90,
       loc_id: localidad6.loc_id,
       ocupado: true,
-      hero_img: 'https://example.com/aquaman.jpg',
+      hero_img: 'https://placehold.co/600x400/png',
     },
   });
 
+  // Crear criminales
   const criminal1 = await prisma.criminal.create({
     data: {
       nombre: 'Lex Luthor',
@@ -129,7 +132,7 @@ async function main() {
       numero_de_miembros: 5,
       loc_id: localidad1.loc_id,
       capturado: false,
-      villano_img: 'https://example.com/lexluthor.jpg',
+      villano_img: 'https://placehold.co/600x400/png',
     },
   });
 
@@ -151,7 +154,7 @@ async function main() {
       numero_de_miembros: 2,
       loc_id: localidad3.loc_id,
       capturado: false,
-      villano_img: 'https://example.com/harleyquinn.jpg',
+      villano_img: 'https://placehold.co/600x400/png',
     },
   });
 
@@ -162,7 +165,7 @@ async function main() {
       numero_de_miembros: 15,
       loc_id: localidad4.loc_id,
       capturado: false,
-      villano_img: 'https://example.com/rasalghul.jpg',
+      villano_img: 'https://placehold.co/600x400/png',
     },
   });
 
@@ -173,7 +176,7 @@ async function main() {
       numero_de_miembros: 8,
       loc_id: localidad5.loc_id,
       capturado: true,
-      villano_img: 'https://example.com/bane.jpg',
+      villano_img: 'https://placehold.co/600x400/png',
     },
   });
 
@@ -184,10 +187,11 @@ async function main() {
       numero_de_miembros: 3,
       loc_id: localidad6.loc_id,
       capturado: false,
-      villano_img: 'https://example.com/twoface.jpg',
+      villano_img: 'https://placehold.co/600x400/png',
     },
   });
 
+  // Crear crímenes
   const crimen1 = await prisma.crimen.create({
     data: {
       victima: 1,
@@ -247,6 +251,8 @@ async function main() {
       en_curso: true,
     },
   });
+
+  console.log('Datos sembrados exitosamente.');
 }
 
 main()
