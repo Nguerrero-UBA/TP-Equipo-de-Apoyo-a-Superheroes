@@ -26,8 +26,24 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: 🚀 Publicar en GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+          
+      - name: 🔧 Configurar git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 🚀 Crear nueva rama y preparar archivos
+        run: |
+          git checkout -b github-pages-deploy-action
+          git add -f frontend/public  # Asegúrate de que sea la carpeta correcta
+          git commit -m "Deploying to gh-pages from GitHub Actions"
+
+      - name: 📤 Subir cambios y crear Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          branch: gh-pages  
-          folder: frontend/public     # Cambia "public" si tus archivos están en otra carpeta
+          branch: github-pages-deploy-action
+          base: gh-pages
+          title: "🚀 Deploying to gh-pages"
+          body: "Automated deployment to GitHub Pages via GitHub Actions"
+          labels: "deployment, automated"
+          
