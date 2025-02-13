@@ -13,7 +13,7 @@ if(document.getElementById('Inicio')){
         console.log(crimenData);
        
 
-        fetch('${backendUrl}/EAS/crimenes', {
+        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/crimenes', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ if(document.getElementById('Inicio')){
         const selectLocalidad = document.getElementById("SelectLoc");
 
         try {
-            const response = await fetch("${backendUrl}/EAS/localidades");
+            const response = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/localidades");
             const localidades = await response.json();
 
             localidades.forEach(localidad => {
@@ -58,7 +58,7 @@ if(document.getElementById('Inicio')){
         const selectVillano = document.getElementById("SelectVill");
 
         try {
-            const response = await fetch("${backendUrl}/EAS/v1/Lista_Criminales/capturados/false");
+            const response = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales/capturados/false");
             const villanos = await response.json();
 
             villanos.forEach(villano => {
@@ -80,9 +80,9 @@ async function cargarCrimenesEnCurso() {
     if(!listaCrimenes) return;
     try {
         // solicitud al back para obtener los crímenes en curso
-        const response = await fetch("${backendUrl}/EAS/crimenes-encurso?en_curso=true");
+        const response = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/crimenes-encurso?en_curso=true");
         const crimenes = await response.json();
-        const heroesResponse = await fetch("${backendUrl}/EAS/heroes?ocupado=false");
+        const heroesResponse = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/heroes?ocupado=false");
         const heroes = await heroesResponse.json();       
 
         listaCrimenes.innerHTML = "";
@@ -143,7 +143,7 @@ async function cargarCrimenesEnCurso() {
                 const crimenCard = this.closest('.card-body'); 
                 const villId = crimenCard.dataset.villanoId;
                 try {
-                    await fetch(`${backendUrl}/EAS/asignar-hero`, {
+                    await fetch(`https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/asignar-hero`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ crimen_id: parseInt(crimenId), hero_id: parseInt(heroId), vill_id: parseInt(villId) })
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     const selectLocCriminal = document.getElementById("SelectLocCriminal");
-    fetch("${backendUrl}/EAS/localidades")
+    fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/localidades")
         .then(response => response.json())
         .then(localidades => {
             localidades.forEach(localidad => {
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
             capturado: false
         };
 
-        fetch('${backendUrl}/EAS/criminales', {
+        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/criminales', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -242,7 +242,7 @@ if(document.getElementById('Capturados')){
     
         try {
             
-            const response = await fetch("${backendUrl}/EAS/v1/Lista_criminales/capturados/true");
+            const response = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_criminales/capturados/true");
             const criminales = await response.json();
     
             if (!Array.isArray(criminales)) {
@@ -287,7 +287,7 @@ if(document.getElementById('Heores')){
 
         try {
 
-            const response = await fetch('${backendUrl}/EAS/heroes');
+            const response = await fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/heroes');
             const heroes = await response.json();
 
             if (!Array.isArray(heroes)) {
