@@ -261,8 +261,8 @@ if(document.getElementById('Capturados')){
                 card.classList.add("col-md-4"); 
     
                 card.innerHTML = `
-                    <div class="card p-1 text-bg-secondary h-100  shadow-lg" style="padding: 10px; margin:20px;" >
-                        <img src="${criminal.villano_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${criminal.nombre}">
+                    <div class="card p-1 text-bg-secondary   shadow-lg" style="padding: 10px; margin:20px;" >
+                        <img src="${criminal.villano_img || 'https://placehold.co/600x400/png'}" class="card-img-top img-fluid"style="max-height: 500px; max-width: 400px; object-fit: scale-down;" alt="${criminal.nombre}">
                         <div class="card-body p-3">
                             <h5 class="card-title"><strong>${criminal.nombre}</strong></h5>
                             <p class="card-text"><strong>Nivel de Poder:</strong> ${criminal.nivel_de_poder}</p>
@@ -305,7 +305,7 @@ if(document.getElementById('Heores')){
                 card.classList.add("col-md-4");
 
                 card.innerHTML = `
-                    <div class="card p-1 text-bg-secondary shadow-lg" style="padding: 10px; margin:20px;" >
+                    <div class="card p-1 text-bg-success shadow-lg" style="padding: 10px; margin:20px;" >
                         <img src="${heroe.hero_img || 'https://placehold.co/600x400/png'}" class="card-img-top" alt="${heroe.Nombre}">
                         <div class="card-body p-3">
                             <h5 class="card-title"><strong>${heroe.Nombre}</strong></h5>
