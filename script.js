@@ -1,4 +1,4 @@
-const backendUrl = process.env.DATABASE_URL;
+//const backendUrl = process.env.DATABASE_URL;
 if(document.getElementById('Inicio')){
     document.getElementById('crimenForm').addEventListener('submit', function(event) {
         event.preventDefault();
