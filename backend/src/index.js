@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 app.use(express.json());
 
 const path = require('path');
-const { connect } = require('http2');
+// const { connect } = require('http2');
 app.use(express.static(path.join(__dirname,'../../frontend/public')));
 
 app.use(express.static(path.join(__dirname, '../../frontend')));
