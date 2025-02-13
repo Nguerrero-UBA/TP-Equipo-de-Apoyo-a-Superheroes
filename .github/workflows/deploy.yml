@@ -32,11 +32,21 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: 🚀 Crear nueva rama y preparar archivos
+      - name: Create new branch for deployment
+        run: git checkout -b github-pages-deploy-action
+
+      - name: Add and commit changes
         run: |
-          git checkout -b github-pages-deploy-action
-          git add -f frontend/public  # Asegúrate de que sea la carpeta correcta
-          git commit -m "Deploying to gh-pages from GitHub Actions"
+          git add -f frontend/public
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Deploying to gh-pages from GitHub Actions"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Push changes
+        if: success()
+        run: git push --set-upstream origin github-pages-deploy-action
 
       - name: 📤 Subir cambios y crear Pull Request
         uses: peter-evans/create-pull-request@v3
