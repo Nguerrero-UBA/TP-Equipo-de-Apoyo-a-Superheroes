@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - name: 📂 Clonar el repositorio
@@ -23,10 +24,7 @@ jobs:
         with:
           node-version: 18 
 
-      - name: 📦 Instalar dependencias
-        run: cd backend && npm install
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      
           
       - name: 📦 Instalar dependencias
         run: cd backend && npm install
