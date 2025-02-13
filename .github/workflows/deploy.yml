@@ -11,6 +11,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
 
     steps:
       - name: 📂 Clonar el repositorio
@@ -26,33 +28,12 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      
-      - name: Create new branch for deployment
-        run: git checkout -b github-pages-deploy-action
-
-      - name: Add and commit changes
-        run: |
-          git add -f frontend/public
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Deploying to gh-pages from GitHub Actions"
-          else
-            echo "No changes to commit"
-          fi
-
-      - name: Push changes
-        if: success()
-        run: git push --set-upstream origin github-pages-deploy-action
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+      - name: 🚀 Publicar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: github-pages-deploy-action
-          base: gh-pages
-          title: "Deploying to gh-pages"
-          body: "Automated deployment to GitHub Pages via GitHub Actions"
+          branch: gh-pages  
+          folder: frontend/public  
+          token: ${{ secrets.GITHUB_TOKEN }}  # Token para autenticar el push
+
       
           
