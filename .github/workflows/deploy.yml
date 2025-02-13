@@ -27,6 +27,11 @@ jobs:
         run: cd backend && npm install
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          
+      - name: 🚀 Ejecutar seed y desplegar
+        run: cd backend && npm start && npm run seed
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🚀 Publicar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
