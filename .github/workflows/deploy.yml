@@ -22,7 +22,7 @@ jobs:
           node-version: 18 
 
       - name: 📦 Instalar dependencias
-        run: npm install
+        run: cd backend && npm install
 
       - name: 🚀 Publicar en GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
