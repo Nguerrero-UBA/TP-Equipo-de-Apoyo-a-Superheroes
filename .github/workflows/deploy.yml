@@ -26,12 +26,11 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-          
-      - name: 🔧 Configurar git
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
+      
       - name: Create new branch for deployment
         run: git checkout -b github-pages-deploy-action
 
@@ -48,12 +47,12 @@ jobs:
         if: success()
         run: git push --set-upstream origin github-pages-deploy-action
 
-      - name: 📤 Subir cambios y crear Pull Request
+      - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           branch: github-pages-deploy-action
           base: gh-pages
-          title: "🚀 Deploying to gh-pages"
+          title: "Deploying to gh-pages"
           body: "Automated deployment to GitHub Pages via GitHub Actions"
-          labels: "deployment, automated"
+      
           
