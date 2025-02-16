@@ -124,7 +124,7 @@ if(document.getElementById('Inicio')){
             villano_img: document.getElementById('InputImagen').value
         };
 
-        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/criminales', {
+        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
