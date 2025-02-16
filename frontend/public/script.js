@@ -120,7 +120,8 @@ if(document.getElementById('Inicio')){
             nivel_de_poder: parseInt(document.getElementById('InputPoder').value),
             numero_de_miembros: parseInt(document.getElementById('InputMiembros').value),
             loc_id: parseInt(document.getElementById('SelectLocCriminal').value),
-            capturado: false
+            capturado: false,
+            villano_img: document.getElementById('InputImagen').value
         };
 
         fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/criminales', {
