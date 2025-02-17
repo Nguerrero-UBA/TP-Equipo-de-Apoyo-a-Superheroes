@@ -8,21 +8,46 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body class="bg-dark text-white" id="Crear_Heroe">
-        
-    </body>
-    <nav class="navbar navbar-expand-lg bg-primary"  data-bs-theme="dark">
-        <div class="container-fluid">
-          
-          
-            <div class="navbar-nav">
-              <a class="nav-link" aria-current="page" href="index.html">Home</a>
-              <a class="nav-link" href="Crimenes.html">Crimenes</a>
-              <a class="nav-link" href="Capturados.html">Criminales capturados</a>
-              <a class="nav-link" href="Heores.html">Heroes</a>
-              <a class="nav-link active" aria-current="page" href="Agregar_Heroes.html">Agregar Heroe</a>
+            
+        <nav class="navbar navbar-expand-lg bg-primary"  data-bs-theme="dark">
+            <div class="container-fluid">
+            
+            
+                <div class="navbar-nav">
+                <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                <a class="nav-link" href="Crimenes.html">Crimenes</a>
+                <a class="nav-link" href="Capturados.html">Criminales capturados</a>
+                <a class="nav-link" href="Heores.html">Heroes</a>
+                <a class="nav-link active" aria-current="page" href="Agregar_Heroes.html">Agregar Heroe</a>
+                </div>
+            
             </div>
-          
+        </nav>
+
+        <div class="container mt-4 rounded shadow-lg" style="background-color: #2a2d32">
+            <h1>Formulario de Registro para Heroe</h1>
+            <form id="Form_Registrar_Heroe">
+                <legend>Ingrese los Datos del Heroe</legend>
+                <div class="mb-3">
+                    <label for="Input_Name" class="form-label">Nombre</label>
+                    <input type="text" id="Input_Name" class="form-control" placeholder="Ingrese el Nmbre">
+                </div>
+                <div class="mb-3">
+                    <label for="Input_Power" class="form-label">Ninel de Poder</label>
+                    <input type="number" min="0" id="Input_Power" class="form-control" placeholder="Ingrese Nivel de poder">
+                </div>
+                <div class="mb-3">
+                    <label for="Select_Localidad" class="form-label">Localidad vigilar</label>
+                    <select id="Select_Localidad" class="form-select" name="Localidad_Elegida">
+                        <option>Seleccione una Localidad</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
         </div>
-    </nav>
-    
+
+    </body>
+
 </html>
