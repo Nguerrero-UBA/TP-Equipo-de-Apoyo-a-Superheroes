@@ -326,5 +326,68 @@ if(document.getElementById('Heores')){
     });
 }
 
+if(document.getElementById('Crear_Heroe')){
+    //Carga de las Localidades
+    let select_localidades = document.getElementById('Select_Localidad');
+    
+    fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/localidades')
+    .then( response => response.json())
+    .then( localidades => {
+        
+        console.log(localidades);
+        
+        localidades.forEach( localidad =>{
+            let option = document.createElement('option');
+            option.textContent = localidad.nombre;
+            option.value = localidad.loc_id;
+
+            select_localidades.appendChild(option);
+        })
+    });
+
+    //Obtencion de los datos del Form
+    function CreateHero() {
+        event.preventDefault();
+        let nombre = document.getElementById('Input_Name').value;
+        let poder  = document.getElementById('Input_Power').value;
+        let localidad_vigilar = document.getElementById('Select_Localidad');
+        let id_localidad = localidad_vigilar.value;
+        
+        //alert(`Nombre: ${nombre}, Poder: ${poder}, Id_Loc: ${id_localidad} `);
+        let body_new_hero = {
+            Nombre: nombre,
+            nivel_de_poder: parseInt(poder),
+            loc_id: parseInt(id_localidad),
+        };
+
+        console.log(body_new_hero);
+        
+        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/heroes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body_new_hero)
+        })
+        .then( response =>  response.json())
+        .then( data => {
+            console.log(data.status);
+            if( data.error){
+                alert('Error:' + data.error);
+            
+            }else{
+                alert('Heroe creado');
+                console.log(data);
+            
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Se produjo un error al crear al Heroe');
+        });
+    }
+    
+
+}
 
 
