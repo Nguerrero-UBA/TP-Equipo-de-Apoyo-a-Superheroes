@@ -24,11 +24,9 @@ const uploadImageToSupabase = async (file) => {
   }
 
   // Obtener la URL pública del archivo cargado
-  const publicUrl = supabase.storage
-    .from('Imagenes_vill_hero')
-    .getPublicUrl(data.path).publicURL;
+  const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/Imagenes_vill_hero/${filename};`
+  console.log("Imagen subida con éxito:",publicUrl);
 
-  console.log('PublicUrl: ',publicUrl)
   return publicUrl;
 };
 
