@@ -121,8 +121,10 @@ if(document.getElementById('Inicio')){
             numero_de_miembros: parseInt(document.getElementById('InputMiembros').value),
             loc_id: parseInt(document.getElementById('SelectLocCriminal').value),
             capturado: false,
-            villano_img: document.getElementById('InputImagen').value
+            villano_img: document.getElementById('Upload_Image').files[0].name
         };
+
+        console.log(criminalData)
 
         fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
             method: 'POST',
