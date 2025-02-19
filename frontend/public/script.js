@@ -113,37 +113,35 @@ if(document.getElementById('Inicio')){
         .catch(error => console.error("Error al cargar localidades:", error));
         
         criminalForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+            event.preventDefault();
 
-        const criminalData = {
-            nombre: document.getElementById('InputNombre').value,
-            nivel_de_poder: parseInt(document.getElementById('InputPoder').value),
-            numero_de_miembros: parseInt(document.getElementById('InputMiembros').value),
-            loc_id: parseInt(document.getElementById('SelectLocCriminal').value),
-            capturado: false,
-            villano_img: document.getElementById('Upload_Image').files[0].name
-        };
+            const formData = new FormData();
 
-        console.log(criminalData)
+            // Agregar los datos del criminal
+            formData.append('nombre', document.getElementById('InputNombre').value);
+            formData.append('nivel_de_poder', parseInt(document.getElementById('InputPoder').value));
+            formData.append('numero_de_miembros', parseInt(document.getElementById('InputMiembros').value));
+            formData.append('loc_id', parseInt(document.getElementById('SelectLocCriminal').value));
+            formData.append('capturado', false);
+            formData.append('villano_img', document.getElementById('Upload_Image').files[0]);
 
-        fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(criminalData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Criminal creado exitosamente');
-            console.log(data);
-            criminalForm.reset();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Hubo un error al crear el criminal');
+            console.log(criminalData)
+
+            fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Criminal creado exitosamente');
+                console.log(data);
+                criminalForm.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error al crear el criminal');
+            });
         });
-    });
 });
 }
 
@@ -352,24 +350,21 @@ if(document.getElementById('Crear_Heroe')){
         let poder  = document.getElementById('Input_Power').value;
         let localidad_vigilar = document.getElementById('Select_Localidad');
         let id_localidad = localidad_vigilar.value;
-        let imagen = document.getElementById('Upload_Image').files[0].name;
+        let imagen = document.getElementById('Upload_Image').files[0];
         
         //alert(`Nombre: ${nombre}, Poder: ${poder}, Id_Loc: ${id_localidad} `);
-        let body_new_hero = {
-            Nombre: nombre,
-            nivel_de_poder: parseInt(poder),
-            loc_id: parseInt(id_localidad),
-            hero_img: imagen
-        };
+        let formData = new FormData();
+        formData.append('Nombre', nombre);
+        formData.append('nivel_de_poder', parseInt(poder));
+        formData.append('loc_id', parseInt(id_localidad));
+        formData.append('ocupado', false);
+        formData.append('hero_img', imagen);
 
         console.log(body_new_hero);
         
         fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/heroes', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body_new_hero)
+            body: formData
         })
         .then( response =>  response.json())
         .then( data => {
