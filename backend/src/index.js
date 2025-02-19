@@ -144,7 +144,7 @@ app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
               loc_id: parseInt(req.body.loc_id),
             },
           },
-          ocupado: req.body.ocupado,
+          ocupado: JSON.parse(req.body.ocupado),
           hero_img: imageUrl,
         },
       });
@@ -398,7 +398,7 @@ app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, re
         nombre: req.body.nombre,
         nivel_de_poder: parseInt(req.body.nivel_de_poder),
         numero_de_miembros: parseInt(req.body.numero_de_miembros),
-        capturado: req.body.capturado,
+        capturado: JSON.parse(req.body.capturado),
         villano_img: imageUrl,
         localidad: {
           connect: {
