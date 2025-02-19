@@ -24,7 +24,7 @@ const uploadImageToSupabase = async (file) => {
   }
 
   // Obtener la URL pública del archivo cargado
-  const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/Imagenes_vill_hero/${filename};`
+  const publicUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/Imagenes_vill_hero/${fileName};`
   console.log("Imagen subida con éxito:",publicUrl);
 
   return publicUrl;
