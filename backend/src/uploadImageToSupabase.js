@@ -18,15 +18,13 @@ const uploadImageToSupabase = async (file) => {
       contentType: mimetype,
       upsert: false,
     });
-
+    console.log('Upload response:', data);
   if (error) {
     throw new Error(`Error al subir la imagen: ${error.message}`);
   }
 
   // Obtener la URL pública del archivo cargado
-  const publicUrl = supabase.storage
-    .from('Imagenes_vill_hero')
-    .getPublicUrl(fileName).publicURL;
+  const { publicUrl } = supabase.storage.from('Imagenes_vill_hero').getPublicUrl(fileName);
 
   console.log('PublicUrl: ',publicUrl)
   return publicUrl;
