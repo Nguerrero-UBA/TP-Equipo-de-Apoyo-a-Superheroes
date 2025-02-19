@@ -24,7 +24,9 @@ const uploadImageToSupabase = async (file) => {
   }
 
   // Obtener la URL pública del archivo cargado
-  const { publicUrl } = supabase.storage.from('Imagenes_vill_hero').getPublicUrl(fileName);
+  const publicUrl = supabase.storage
+    .from('Imagenes_vill_hero')
+    .getPublicUrl(data.path).publicURL;
 
   console.log('PublicUrl: ',publicUrl)
   return publicUrl;
