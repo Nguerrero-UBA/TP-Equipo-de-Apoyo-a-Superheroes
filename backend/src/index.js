@@ -117,7 +117,7 @@ app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
     
       const localidadExistente = await prisma.localidad.findUnique({
         where: {
-          loc_id: req.body.loc_id,
+          loc_id: parseInt(req.body.loc_id),
         },
       });
 
@@ -139,7 +139,7 @@ app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
           nivel_de_poder: req.body.nivel_de_poder, // Corregido aquí
           localidad: {
             connect: {
-              loc_id: req.body.loc_id,
+              loc_id: parseInt(req.body.loc_id),
             },
           },
           ocupado: req.body.ocupado,
@@ -373,7 +373,7 @@ app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, re
 
     const localidadExistente = await prisma.localidad.findUnique({
       where: {
-        loc_id: req.body.loc_id,
+        loc_id: parseInt(req.body.loc_id),
       },
     });
 
@@ -398,7 +398,7 @@ app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, re
         villano_img: imageUrl,
         localidad: {
           connect: {
-            loc_id: req.body.loc_id,
+            loc_id: parseInt(req.body.loc_id),
           },
         },
       },
