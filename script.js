@@ -238,6 +238,52 @@ if(document.getElementById('Crimenes')){
     document.addEventListener("DOMContentLoaded", cargarCrimenesEnCurso);
 }
 
+if(document.getElementById('Buscados')){
+    document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("criminales-buscados-container");
+    
+        try {
+            
+            const response = await fetch("https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_criminales/capturados/false");
+            const criminales = await response.json();
+    
+            if (!Array.isArray(criminales)) {
+                console.error("La API no devolvió una lista de criminales.");
+                return;
+            }
+    
+            
+            if (criminales.length === 0) {
+                container.innerHTML = "<p class='text-light text-center'>No hay criminales capturados.</p>";
+                return;
+            }
+    
+            
+            criminales.forEach(criminal => {
+                const card = document.createElement("div");
+                card.classList.add("col-md-4"); 
+    
+                card.innerHTML = `
+                    <div class="card p-1 text-bg-secondary   shadow-lg" style="padding: 10px; margin:20px;" >
+                        <img src="${criminal.villano_img || 'https://placehold.co/600x400/png'}" class="card-img-top img-fluid"style="max-height: 500px; max-width: 400px; object-fit: scale-down;" alt="${criminal.nombre}">
+                        <div class="card-body p-3">
+                            <h5 class="card-title"><strong>${criminal.nombre}</strong></h5>
+                            <p class="card-text"><strong>Nivel de Poder:</strong> ${criminal.nivel_de_poder}</p>
+                            <p class="card-text"><strong>Miembros:</strong> ${criminal.numero_de_miembros}</p>
+                            <p class="card-text"><strong>Localidad:</strong> ${criminal.localidad.nombre}</p>
+                        </div>
+                    </div>
+                `;
+    
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Error al obtener los criminales capturados:", error);
+            container.innerHTML = "<p class='text-light text-center'>Error al cargar la lista.</p>";
+        }
+    });
+}
+
 if(document.getElementById('Capturados')){
     document.addEventListener("DOMContentLoaded", async () => {
         const container = document.getElementById("criminales-container");
