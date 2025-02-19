@@ -9,6 +9,8 @@ const uploadImageToSupabase = async (file) => {
   // Generar un nombre único para la imagen
   const fileName = Date.now() + path.extname(originalname);
 
+  console.log('Filename: ', fileName);
+
   // Subir el archivo a Supabase Storage
   const { data, error } = await supabase.storage
     .from('Imagenes_vill_hero')
@@ -26,6 +28,7 @@ const uploadImageToSupabase = async (file) => {
     .from('Imagenes_vill_hero')
     .getPublicUrl(fileName).publicURL;
 
+  console.log('PublicUrl: ',publicUrl)
   return publicUrl;
 };
 
