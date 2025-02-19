@@ -133,10 +133,12 @@ app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
 
       const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
 
+      console.log('ImgUrl Heroe: ',imageUrl)
+
       const nuevoHeroe = await prisma.hero.create({
         data: {
           Nombre: req.body.Nombre,
-          nivel_de_poder: req.body.nivel_de_poder, // Corregido aquí
+          nivel_de_poder: parseInt(req.body.nivel_de_poder), // Corregido aquí
           localidad: {
             connect: {
               loc_id: parseInt(req.body.loc_id),
@@ -389,11 +391,13 @@ app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, re
 
     const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
     
+    console.log('ImgUrl Villano: ',imageUrl)
+
     const Criminal = await prisma.criminal.create({
       data: {
         nombre: req.body.nombre,
-        nivel_de_poder: req.body.nivel_de_poder,
-        numero_de_miembros: req.body.numero_de_miembros,
+        nivel_de_poder: parseInt(req.body.nivel_de_poder),
+        numero_de_miembros: parseInt(req.body.numero_de_miembros),
         capturado: req.body.capturado,
         villano_img: imageUrl,
         localidad: {
