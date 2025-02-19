@@ -125,7 +125,7 @@ if(document.getElementById('Inicio')){
             formData.append('capturado', false);
             formData.append('villano_img', document.getElementById('Upload_Image').files[0]);
 
-            console.log(criminalData)
+           
 
             fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
                 method: 'POST',
@@ -360,7 +360,7 @@ if(document.getElementById('Crear_Heroe')){
         formData.append('ocupado', false);
         formData.append('hero_img', imagen);
 
-        console.log(body_new_hero);
+       
         
         fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/heroes', {
             method: 'POST',
