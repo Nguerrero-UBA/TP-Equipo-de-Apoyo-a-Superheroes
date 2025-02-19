@@ -334,9 +334,6 @@ if(document.getElementById('Crear_Heroe')){
     fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/localidades')
     .then( response => response.json())
     .then( localidades => {
-        
-        console.log(localidades);
-        
         localidades.forEach( localidad =>{
             let option = document.createElement('option');
             option.textContent = localidad.nombre;
@@ -353,12 +350,14 @@ if(document.getElementById('Crear_Heroe')){
         let poder  = document.getElementById('Input_Power').value;
         let localidad_vigilar = document.getElementById('Select_Localidad');
         let id_localidad = localidad_vigilar.value;
+        let imagen = document.getElementById('Upload_Image').files[0].name;
         
         //alert(`Nombre: ${nombre}, Poder: ${poder}, Id_Loc: ${id_localidad} `);
         let body_new_hero = {
             Nombre: nombre,
             nivel_de_poder: parseInt(poder),
             loc_id: parseInt(id_localidad),
+            hero_img: imagen
         };
 
         console.log(body_new_hero);
@@ -379,7 +378,6 @@ if(document.getElementById('Crear_Heroe')){
             }else{
                 alert('Heroe creado');
                 console.log(data);
-            
             }
         })
         .catch(error => {
