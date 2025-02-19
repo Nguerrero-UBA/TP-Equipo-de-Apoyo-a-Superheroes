@@ -1,5 +1,5 @@
-import { supabase } from './config/supabaseClient';
-import path from 'path';
+const { supabase } = require('../config/supabaseClient');
+const path = require('path');
 
 const uploadImageToSupabase = async (file) => {
   const { originalname, buffer, mimetype } = file;
@@ -21,10 +21,10 @@ const uploadImageToSupabase = async (file) => {
 
   // Obtener la URL pública del archivo cargado
   const publicUrl = supabase.storage
-    .from('images')
+    .from('Imagenes_vill_hero')
     .getPublicUrl(fileName).publicURL;
 
   return publicUrl;
 };
 
-export default uploadImageToSupabase;
+module.exports = uploadImageToSupabase;
