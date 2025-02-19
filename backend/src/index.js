@@ -170,7 +170,7 @@ app.put("/EAS/heroes/:id", async (req, res) => {
       where: { hero_id: parseInt(id) },
       data: {
         Nombre: req.body.Nombre,
-        nivel_poder: req.body.nivel_poder,
+        nivel_de_poder: req.body.nivel_de_poder,
         localidad: {
           connect: {
             loc_id: req.body.loc_id,
@@ -365,8 +365,8 @@ app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
     const Criminal = await prisma.criminal.create({
       data: {
         nombre: req.body.nombre,
-        nivel_de_poder: req.body.nivel_poder,
-        numero_de_miembros: req.body.cantidad_miembros,
+        nivel_de_poder: req.body.nivel_de_poder,
+        numero_de_miembros: req.body.numero_de_miembros,
         capturado: req.body.capturado,
         villano_img: req.body.villano_img,
         localidad: {
