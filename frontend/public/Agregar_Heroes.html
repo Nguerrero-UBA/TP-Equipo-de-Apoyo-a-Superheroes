@@ -9,7 +9,7 @@
     </head>
     <body class="bg-dark text-white" id="Crear_Heroe">
             
-        <nav class="navbar navbar-expand-lg bg-primary"  data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg bg-primary" style="background-color: #054879;" data-bs-theme="dark">
             <div class="container-fluid">
             
             
@@ -34,13 +34,17 @@
                 </div>
                 <div class="mb-3">
                     <label for="Input_Power" class="form-label">Nivel de Poder</label>
-                    <input type="number" min="0" id="Input_Power" class="form-control" placeholder="Ingrese Nivel de poder">
+                    <input type="number" min="1" id="Input_Power" class="form-control" placeholder="Ingrese Nivel de poder">
                 </div>
                 <div class="mb-3">
-                    <label for="Select_Localidad" class="form-label">Localidad vigilar</label>
+                    <label for="Select_Localidad" class="form-label">Localidad a vigilar</label>
                     <select id="Select_Localidad" class="form-select" name="Localidad_Elegida">
                         <option>Seleccione una Localidad</option>
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="Upload_Image" class="form-label">Subir Imagen del Heroe (solo archivos con extension .png, .jpg o .jpeg)</label>
+                    <input type="file" id="Upload_Image" class="form-control" accept=".png, .jpg, .jpeg" placeholder="">
                 </div>
 
                 <button type="submit" class="btn btn-primary" onclick="CreateHero()">Enviar</button>
