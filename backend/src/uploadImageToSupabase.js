@@ -1,5 +1,7 @@
-const { supabase } = require('../config/supabaseClient');
+const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const uploadImageToSupabase = async (file) => {
   const { originalname, buffer, mimetype } = file;
