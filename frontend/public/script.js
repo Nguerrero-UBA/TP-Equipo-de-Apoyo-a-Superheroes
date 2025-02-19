@@ -71,7 +71,7 @@ if(document.getElementById('Inicio')){
             console.error("Error al cargar Criminales:", error);
         }
     });
-    console.log("test")
+    
     document.addEventListener("DOMContentLoaded", () => {
     const toggleSwitch = document.getElementById('toggleSwitch');
     const toggleLabel = document.getElementById('toggleLabel');
