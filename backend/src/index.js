@@ -108,7 +108,7 @@ app.get("/EAS/heroes", async (req, res) => {
 });
 
 
-app.post("/EAS/heroes", async (req, res) => {
+app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
   try {
 
     if (!req.file) {
@@ -364,9 +364,13 @@ app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
   res.json(Lista_criminales);  
 })
 
-app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
+app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, res) => {
   try {
     
+    if (!req.file) {
+      return res.status(400).json({ error: "Se debe proporcionar una imagen" });
+    }
+
     const localidadExistente = await prisma.localidad.findUnique({
       where: {
         loc_id: req.body.loc_id,
@@ -377,6 +381,13 @@ app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
       return res.status(400).json({ error: "La localidad no existe" });
     }
 
+    const file = {
+      originalname: req.file.originalname,
+      buffer: req.file.buffer,
+      mimetype: req.file.mimetype,
+    };
+
+    const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
     
     const Criminal = await prisma.criminal.create({
       data: {
@@ -384,7 +395,7 @@ app.post('/EAS/v1/Lista_Criminales', async (req, res) => {
         nivel_de_poder: req.body.nivel_de_poder,
         numero_de_miembros: req.body.numero_de_miembros,
         capturado: req.body.capturado,
-        villano_img: req.body.villano_img,
+        villano_img: imageUrl,
         localidad: {
           connect: {
             loc_id: req.body.loc_id,
