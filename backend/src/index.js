@@ -110,6 +110,11 @@ app.get("/EAS/heroes", async (req, res) => {
 
 app.post("/EAS/heroes", async (req, res) => {
   try {
+
+    if (!req.file) {
+      return res.status(400).json({ error: "Se debe proporcionar una imagen" });
+    }
+    
       const localidadExistente = await prisma.localidad.findUnique({
         where: {
           loc_id: req.body.loc_id,
@@ -119,6 +124,14 @@ app.post("/EAS/heroes", async (req, res) => {
       if (!localidadExistente) {
         return res.status(400).json({ error: "La localidad no existe" });
       }
+
+      const file = {
+        originalname: req.file.originalname,
+        buffer: req.file.buffer,
+        mimetype: req.file.mimetype,
+      };
+
+      const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
 
       const nuevoHeroe = await prisma.hero.create({
         data: {
@@ -130,7 +143,7 @@ app.post("/EAS/heroes", async (req, res) => {
             },
           },
           ocupado: req.body.ocupado,
-          hero_img: req.body.hero_img,
+          hero_img: imageUrl,
         },
       });
 
