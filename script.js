@@ -1,4 +1,20 @@
 
+function toggleVisibilidad(showId, hideId) {
+    const showElement = document.getElementById(showId);
+    const hideElement = document.getElementById(hideId);
+
+    const showLabel = document.querySelector(`label[for="${showId}"]`);
+    const hideLabel = document.querySelector(`label[for="${hideId}"]`);
+    
+    if (showElement && hideElement) {
+        showElement.style.display = "block";
+        showLabel.style.display="block"
+        hideElement.style.display = "none";
+        hideLabel.style.display="none"
+    } else {
+        console.error("Uno o ambos elementos no existen.");
+    }
+}
 if(document.getElementById('Inicio')){
     document.getElementById('crimenForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -123,10 +139,15 @@ if(document.getElementById('Inicio')){
             formData.append('numero_de_miembros', parseInt(document.getElementById('InputMiembros').value));
             formData.append('loc_id', parseInt(document.getElementById('SelectLocCriminal').value));
             formData.append('capturado', false);
-            formData.append('villano_img', document.getElementById('Upload_Image').files[0]);
+            if(document.getElementById('Upload_Image_URL').value.trim()!=="" && document.getElementById('toggleImageInputVill').checked){
+                formData.append('villano_img', document.getElementById('Upload_Image_URL').value);
+            }else{
+                formData.append('villano_img', document.getElementById('Upload_Image').files[0]);
+            }
+                
 
            
-
+            
             fetch('https://tp-equipo-de-apoyo-a-superheroes.onrender.com/EAS/v1/Lista_Criminales', {
                 method: 'POST',
                 body: formData
@@ -396,7 +417,8 @@ if(document.getElementById('Crear_Heroe')){
         let poder  = document.getElementById('Input_Power').value;
         let localidad_vigilar = document.getElementById('Select_Localidad');
         let id_localidad = localidad_vigilar.value;
-        let imagen = document.getElementById('Upload_Image').files[0];
+        let imagen = document.getElementById('Upload_Image_hero').files[0];
+        let imagen_url = document.getElementById('Upload_Image_URL_hero').value.trim();
         
         //alert(`Nombre: ${nombre}, Poder: ${poder}, Id_Loc: ${id_localidad} `);
         let formData = new FormData();
@@ -404,7 +426,11 @@ if(document.getElementById('Crear_Heroe')){
         formData.append('nivel_de_poder', parseInt(poder));
         formData.append('loc_id', parseInt(id_localidad));
         formData.append('ocupado', false);
-        formData.append('hero_img', imagen);
+        if(imagen_url !== "" && document.getElementById('toggleImageInputHero').checked){
+            formData.append('hero_img', imagen_url);
+        }else{
+            formData.append('hero_img', imagen);
+        }
 
        
         
@@ -431,5 +457,30 @@ if(document.getElementById('Crear_Heroe')){
     
 
 }
+if(document.getElementById("toggleImageInputVill")){
+    document.getElementById("toggleImageInputVill").addEventListener("change", function() {
+        
+    
+        if (this.checked) {
+            toggleVisibilidad("Upload_Image_URL","Upload_Image");
+        } else {
+            toggleVisibilidad("Upload_Image","Upload_Image_URL");
+        }
+    });
+}
+if(document.getElementById("toggleImageInputHero")){
+    document.getElementById("toggleImageInputHero").addEventListener("change", function() {
+        
+    
+        if (this.checked) {
+            toggleVisibilidad("Upload_Image_URL_hero","Upload_Image_hero");
+        } else {
+            toggleVisibilidad("Upload_Image_hero","Upload_Image_URL_hero");
+        }
+    });
+}
+
+
+
 
 
