@@ -43,9 +43,21 @@
                         <option>Seleccione una Localidad</option>
                     </select>
                 </div>
+                <div class="mb-3 d-flex align-items-center">
+                    <div class="form-check form-switch me-3">
+                        <input class="form-check-input" type="checkbox" id="toggleImageInputHero">
+                        
+                    </div>
+                    
+                    <div class="flex-grow-1">
+                        <label for="Upload_Image_hero" class="form-label">Subir Imagen del Heroe (solo archivos con extension .png, .jpg o .jpeg)</label>
+                        <input type="file" id="Upload_Image_hero" class="form-control" accept=".png, .jpg, .jpeg" placeholder="">
+                        <label for="Upload_Image_URL_hero" class="form-label" style="display:none">Subir Imagen del Heroe (URL)</label>
+                        <input type="text" id="Upload_Image_URL_hero" class="form-control" style="display: none;" placeholder="Ingrese la URL de la imagen">
+                    </div>
+                </div>
                 <div class="mb-3">
-                    <label for="Upload_Image" class="form-label">Subir Imagen del Heroe (solo archivos con extension .png, .jpg o .jpeg)</label>
-                    <input type="file" id="Upload_Image" class="form-control" accept=".png, .jpg, .jpeg" placeholder="">
+                    
                 </div>
 
                 <button type="submit" class="btn btn-primary" onclick="CreateHero()">Enviar</button>
