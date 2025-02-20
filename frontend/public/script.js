@@ -427,6 +427,7 @@ if(document.getElementById('Crear_Heroe')){
         formData.append('loc_id', parseInt(id_localidad));
         formData.append('ocupado', false);
         if(imagen_url !== "" && document.getElementById('toggleImageInputHero').checked){
+            console.log(imagen_url);
             formData.append('hero_img', imagen_url);
         }else{
             formData.append('hero_img', imagen);

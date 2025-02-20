@@ -110,9 +110,11 @@ app.get("/EAS/heroes", async (req, res) => {
 
 app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
   try {
+    let imageUrl = req.body.hero_img?.trim();
 
-    if (!req.file) {
-      return res.status(400).json({ error: "Se debe proporcionar una imagen" });
+
+    if (!req.file && (!imageUrl || imageUrl === "")) {
+      return res.status(400).json({ error: "Se debe proporcionar una imagen (archivo o URL)" });
     }
     
       const localidadExistente = await prisma.localidad.findUnique({
@@ -125,15 +127,15 @@ app.post("/EAS/heroes", upload.single('hero_img'), async (req, res) => {
         return res.status(400).json({ error: "La localidad no existe" });
       }
 
-      const file = {
-        originalname: req.file.originalname,
-        buffer: req.file.buffer,
-        mimetype: req.file.mimetype,
-      };
-
-      const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
-
-      console.log('ImgUrl Heroe: ',imageUrl)
+      if (req.file) {
+        const file = {
+          originalname: req.file.originalname,
+          buffer: req.file.buffer,
+          mimetype: req.file.mimetype,
+        };
+        imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
+        console.log("ImgUrl Heroe:", imageUrl);
+      }
 
       const nuevoHeroe = await prisma.hero.create({
         data: {
@@ -369,7 +371,9 @@ app.get('/EAS/v1/Lista_Criminales/:id', async (req, res) => {
 app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, res) => {
   try {
     
-    if (!req.file) {
+    let imageUrl = req.body.villano_img?.trim();
+
+    if (!req.file && (!imageUrl || imageUrl === "")) {
       return res.status(400).json({ error: "Se debe proporcionar una imagen" });
     }
 
@@ -383,15 +387,16 @@ app.post('/EAS/v1/Lista_Criminales', upload.single('villano_img'),async (req, re
       return res.status(400).json({ error: "La localidad no existe" });
     }
 
-    const file = {
-      originalname: req.file.originalname,
-      buffer: req.file.buffer,
-      mimetype: req.file.mimetype,
-    };
-
-    const imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
+    if (req.file) {
+      const file = {
+        originalname: req.file.originalname,
+        buffer: req.file.buffer,
+        mimetype: req.file.mimetype,
+      };
+      imageUrl = await uploadImageToSupabase(file); // Obtener la URL pública de la imagen
+      console.log('ImgUrl Villano: ',imageUrl)
+    }
     
-    console.log('ImgUrl Villano: ',imageUrl)
 
     const Criminal = await prisma.criminal.create({
       data: {
