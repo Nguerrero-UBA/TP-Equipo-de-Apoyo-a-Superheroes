@@ -459,7 +459,7 @@ if(document.getElementById('Crear_Heroe')){
 }
 if(document.getElementById("toggleImageInputVill")){
     document.getElementById("toggleImageInputVill").addEventListener("change", function() {
-        
+        console.log("toggle img vill");
     
         if (this.checked) {
             toggleVisibilidad("Upload_Image_URL","Upload_Image");
@@ -471,7 +471,7 @@ if(document.getElementById("toggleImageInputVill")){
 if(document.getElementById("toggleImageInputHero")){
     document.getElementById("toggleImageInputHero").addEventListener("change", function() {
         
-    
+        console.log("toggle img hero");
         if (this.checked) {
             toggleVisibilidad("Upload_Image_URL_hero","Upload_Image_hero");
         } else {
